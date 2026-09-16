@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NyayaSetu — National Legal Literacy & Case Tracking Portal</title>
+  <meta name="description" content="National Legal Literacy, Case Tracking and Compliance Portal for Citizens and Legal Practitioners in India.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Government Accessibility Strip -->
+  <div class="top-gov-strip no-print">
+    <div class="top-gov-inner">
+      <div class="top-gov-left">
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <div class="tricolor-flag">
+            <span class="saffron"></span>
+            <span class="white"></span>
+            <span class="green"></span>
+          </div>
+          <span><strong>भारत सरकार</strong> | Government of India</span>
+        </div>
+        <span><strong>विधि और न्याय मंत्रालय</strong> | Ministry of Law and Justice</span>
+      </div>
+
+      <div class="accessibility-tools">
+        <span>Language: <strong>English / हिन्दी</strong></span>
+        <span style="margin: 0 5px;">|</span>
+        <span>Text Size:</span>
+        <button onclick="changeFontSize('small')">A-</button>
+        <button onclick="changeFontSize('normal')">A</button>
+        <button onclick="changeFontSize('large')">A+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- National Tricolor Strip -->
+  <div class="tricolor-line">
+    <span class="t-orange"></span>
+    <span class="t-white"></span>
+    <span class="t-green"></span>
+  </div>
+
+  <!-- Main Portal Header -->
+  <header class="main-header no-print">
+    <div class="header-inner">
+      <div class="header-brand">
+        <!-- Ashoka Stambh Emblem Silhouette -->
+        <svg class="emblem-img" viewBox="0 0 100 120" fill="#003366">
+          <path d="M50,5 C43,5 38,10 38,17 C38,20 40,23 42,25 C39,27 37,30 37,34 C37,38 39,41 42,43 C39,45 37,48 37,52 C37,57 40,61 44,63 L44,80 L35,80 L32,88 L68,88 L65,80 L56,80 L56,63 C60,61 63,57 63,52 C63,48 61,45 58,43 C61,41 63,38 63,34 C63,30 61,27 58,25 C60,23 62,20 62,17 C62,10 57,5 50,5 Z M47,15 C47,13 48,12 50,12 C52,12 53,13 53,15 C53,17 52,18 50,18 C48,18 47,17 47,15 Z M30,92 L70,92 L72,98 L28,98 Z M24,102 L76,102 L74,108 L26,108 Z M35,110 L65,110 L65,114 L35,114 Z" />
+        </svg>
+
+        <div class="brand-text">
+          <div class="hindi-title">न्यायसेतु — राष्ट्रीय विधिक साक्षरता एवं वाद अनुश्रवण पोर्टल</div>
+          <h1>NYAYASETU</h1>
+          <div class="tagline">National Legal Literacy, Statutory Drafting & Case Tracking Gateway</div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="academic-badge">
+          <strong>Ramdeobaba University (RBU), Nagpur</strong><br>
+          Department of Computer Science & Engineering (IDEA Lab)<br>
+          <span style="font-size: 10px; color: #666;">Team: Dev Jain, Mansvi Khupse, Swati Kundu, Chinta Bhumika Reddy</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar (Standard Navy Blue with Persona Switcher) -->
+  <nav class="navbar no-print">
+    <div class="navbar-inner">
+      <!-- Citizen Tabs -->
+      <button class="nav-link active" id="nav-assistant" onclick="showTab('assistant')">
+        Legal Literacy
+        <span class="sub-text">विधिक साक्षरता</span>
+      </button>
+      <button class="nav-link" id="nav-autodraft" onclick="showTab('autodraft')">
+        Document Drafter
+        <span class="sub-text">प्रपत्र प्रारूपण</span>
+      </button>
+      <button class="nav-link" id="nav-voicebot" onclick="showTab('voicebot')">
+        Bhashini Voice Bot
+        <span class="sub-text">बहुभाषी वाणी सेवा</span>
+      </button>
+      <button class="nav-link" id="nav-ecourts" onclick="showTab('ecourts')">
+        eCourts Tracker
+        <span class="sub-text">वाद स्थिति (NJDG)</span>
+      </button>
+      <button class="nav-link" id="nav-bhulekh" onclick="showTab('bhulekh')">
+        Land Records
+        <span class="sub-text">भूलेख / 7/12</span>
+      </button>
+      <button class="nav-link" id="nav-calendar" onclick="showTab('calendar')">
+        Compliance Calendar
+        <span class="sub-text">समय सीमा पंचांग</span>
+      </button>
+      <button class="nav-link" id="nav-clientroom" onclick="showTab('clientroom')">
+        Private Case Rooms
+        <span class="sub-text">निजी वाद कक्ष</span>
+      </button>
+
+      <!-- Advocate Section Tabs (Toggled via Persona Switcher) -->
+      <button class="nav-link" id="nav-lawyerrooms" style="display: none;" onclick="showTab('lawyerrooms')">
+        Advocate Case Rooms
+        <span class="sub-text">सक्रिय वाद कक्ष सूची</span>
+      </button>
+      <button class="nav-link" id="nav-practicemgmt" style="display: none;" onclick="showTab('practicemgmt')">
+        Litigation Docket
+        <span class="sub-text">सक्रिय वाद पंजिका</span>
+      </button>
+      <button class="nav-link" id="nav-billable" style="display: none;" onclick="showTab('billable')">
+        Billable Hours & Tasks
+        <span class="sub-text">समय अनुश्रवण</span>
+      </button>
+
+      <!-- Persona Switcher -->
+      <div class="persona-toggle-wrap">
+        <span style="color: #ccd9e6; font-size: 11px; margin-right: 4px;">Role:</span>
+        <button class="btn-persona active" id="btnRoleCitizen" onclick="switchRole('citizen')">Citizen</button>
+        <button class="btn-persona" id="btnRoleAdvocate" onclick="switchRole('advocate')">Advocate Desk</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Body Content -->
+  <main class="page-container">
+
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb no-print" id="breadcrumbTrail">
+      Home &gt; Citizen Services &gt; <strong>AI Legal & Tax Literacy Assistant</strong>
+    </div>
+
+    <!-- Statutory Disclaimer Notice -->
+    <div class="statutory-alert-box no-print">
+      <strong>STATUTORY NOTICE:</strong> This system is provided for legal literacy, statutory referencing, and self-help document drafting in accordance with the Advocates Act, 1961 (Section 29/33) and Bar Council of India Rule 36 (non-solicitation). It does not substitute formal legal counsel.
+    </div>
+
+    <!-- ==================================================================
+         1. TAB: LEGAL & TAX LITERACY ASSISTANT
+         ================================================================== -->
+    <div class="tab-content active" id="tab-assistant">
+      <div class="two-col-layout">
+        
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Legal & Tax Query Classification</span>
+              <span class="badge badge-green">Free Bhashini / Gemini Engine</span>
+            </div>
+            <div class="panel-body">
+              <p style="font-size: 12px; color: #555; margin-bottom: 10px;">
+                Enter your grievance in simple words (English, Hindi, Marathi). The system identifies the governing acts, applicable legal sections, court jurisdiction, and actionable remedies.
+              </p>
+
+              <div class="form-row">
+                <label for="txtUserQuery">Describe your legal problem:</label>
+                <textarea id="txtUserQuery" rows="4" placeholder="Example: Landlord is refusing to return my security deposit of Rs 85,000 even after vacating the flat on mutual notice..."></textarea>
+              </div>
+
+              <div style="margin-top: 10px;">
+                <button type="button" class="btn btn-primary" onclick="processLegalQuery()">Analyze Statutory Provisions</button>
+                <button type="button" class="btn btn-default" onclick="clearQueryInput()">Clear</button>
+              </div>
+
+              <div class="sample-links-bar">
+                <strong>Click to test standard citizen cases:</strong><br>
+                <a href="javascript:void(0)" onclick="loadCase('cheque')">[Cheque Bounce Sec 138]</a>
+                <a href="javascript:void(0)" onclick="loadCase('tenant')">[Tenancy Deposit Withholding]</a>
+                <a href="javascript:void(0)" onclick="loadCase('consumer')">[Defective Mobile Phone / Warranty]</a>
+                <a href="javascript:void(0)" onclick="loadCase('cyber')">[Cyber UPI Fraud]</a>
+                <a href="javascript:void(0)" onclick="loadCase('tax')">[Income Tax Demand Notice 143(1)]</a>
+                <a href="javascript:void(0)" onclick="loadCase('rti')">[RTI for Delayed Municipal Work]</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Statutory Analysis & Citizen Remedies</span>
+              <button type="button" class="btn btn-default btn-sm" onclick="transferToDrafter()">Open in Document Drafter</button>
+            </div>
+            <div class="panel-body" id="analysisResultArea">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         2. TAB: COURT-READY DOCUMENT DRAFTER
+         ================================================================== -->
+    <div class="tab-content" id="tab-autodraft">
+      <div class="two-col-layout">
+        
+        <div class="col-sidebar">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Pleading Form Parameters</span>
+            </div>
+            <div class="panel-body">
+              <div class="form-row">
+                <label for="selectDocType">Select Pleading Type:</label>
+                <select id="selectDocType" onchange="renderPleading()">
+                  <option value="sec138">Statutory Demand Notice (Section 138 NI Act)</option>
+                  <option value="rti">RTI Form A Application (RTI Act, 2005)</option>
+                  <option value="consumer">Consumer Grievance Notice (CPA, 2019)</option>
+                  <option value="eviction">Tenancy Termination Notice (TP Act, 1882)</option>
+                  <option value="affidavit">General Sworn Affidavit (Oaths Act, 1969)</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="inpSender">Applicant / Sender Name:</label>
+                <input type="text" id="inpSender" value="Dev Jain" oninput="renderPleading()">
+              </div>
+
+              <div class="form-row">
+                <label for="inpRecipient">Respondent / Drawer / PIO:</label>
+                <input type="text" id="inpRecipient" value="Rajesh Sharma (Prop. Sharma Enterprises)" oninput="renderPleading()">
+              </div>
+
+              <div class="form-row">
+                <label for="inpParticulars">Transaction / Matter Particulars:</label>
+                <input type="text" id="inpParticulars" value="Cheque No. 448912 dated 10-08-2026 for INR 1,50,000 drawn on HDFC Bank" oninput="renderPleading()">
+              </div>
+
+              <div class="form-row">
+                <label for="inpGrievance">Grievance / Fact Statement:</label>
+                <textarea id="inpGrievance" rows="3" oninput="renderPleading()">Returned unpaid with bank memo dated 14-08-2026 citing 'Funds Insufficient'. Outstanding liability has remained unpaid despite demands.</textarea>
+              </div>
+
+              <div class="form-row">
+                <label for="inpPlace">City / Territorial Station:</label>
+                <input type="text" id="inpPlace" value="Nagpur, Maharashtra" oninput="renderPleading()">
+              </div>
+
+              <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 6px;">
+                <button type="button" class="btn btn-primary" onclick="window.print()">Print Official Court Brief</button>
+                <button type="button" class="btn btn-default" onclick="copyPleadingText()">Copy Text</button>
+                <button type="button" class="btn btn-default" onclick="downloadPleadingText()">Download Brief (.txt)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-main">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Court-Ready Pleading Preview (Formatted for Stamp Paper)</span>
+              <span class="badge badge-green">Standard Form</span>
+            </div>
+            <div class="panel-body" style="background-color: #e9ecef; padding: 20px;">
+              <div class="pleading-paper" id="pleadingPaper">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         3. TAB: BHASHINI MULTILINGUAL VOICE ASSISTANT
+         ================================================================== -->
+    <div class="tab-content" id="tab-voicebot">
+      <div class="two-col-layout">
+        
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Bhashini Conversational Assistant (वाणी सेवा)</span>
+              <span class="badge badge-green">Online</span>
+            </div>
+            <div class="panel-body" style="padding: 0;">
+              <div class="voice-chat-box">
+                <div class="voice-chat-log" id="voiceChatLog">
+                  <div class="chat-row bot">
+                    <strong>नमस्ते। न्यायसेतु विधिक साक्षरता केंद्र में आपका स्वागत है।</strong><br>
+                    आप अपनी कानूनी समस्या बोलकर या लिखकर दर्ज कर सकते हैं (मराठी, हिन्दी, English, தமிழ்).
+                    <div class="chat-time">10:00 AM</div>
+                  </div>
+                </div>
+
+                <div id="micStatus" style="display: none; background: #fff8e1; color: #f57f17; font-size: 11px; padding: 4px 10px; border-top: 1px solid #ffe082;">
+                  Listening to microphone... Speak in your regional language.
+                </div>
+
+                <div class="voice-input-row">
+                  <input type="text" id="inpVoiceText" placeholder="Type query or use voice input..." onkeypress="handleVoiceEnter(event)" style="flex: 1;">
+                  <button type="button" class="btn btn-primary btn-sm" id="btnRecord" onclick="toggleRecordVoice()">Record Voice</button>
+                  <button type="button" class="btn btn-success btn-sm" onclick="sendVoiceMessage()">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Language Selection & Voice Settings</span>
+            </div>
+            <div class="panel-body">
+              <fieldset>
+                <legend>Language Selection</legend>
+                <div class="form-row">
+                  <label for="selectLang">Operating Language:</label>
+                  <select id="selectLang" onchange="setSpeechLanguage()">
+                    <option value="mr-IN">मराठी (Marathi)</option>
+                    <option value="hi-IN" selected>हिन्दी (Hindi)</option>
+                    <option value="en-IN">Indian English</option>
+                    <option value="ta-IN">தமிழ் (Tamil)</option>
+                  </select>
+                </div>
+              </fieldset>
+
+              <div style="background-color: #f7f9fa; border: 1px solid #ccd1d9; padding: 12px; margin-top: 15px;">
+                <strong>About Bhashini Voice Interface:</strong>
+                <p style="font-size: 12px; color: #555; margin-top: 5px;">
+                  Powered by Government of India National Language Translation Mission (NLTM) speech models. Click <strong>Record Voice</strong> to dictate your problem, or type in the box and press Submit. The system will answer in voice and text.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         4. TAB: eCOURTS CASE STATUS TRACKER
+         ================================================================== -->
+    <div class="tab-content" id="tab-ecourts">
+      <div class="panel">
+        <div class="panel-header">
+          <span>National Judicial Data Grid (NJDG) — Case Status Search</span>
+          <span class="badge badge-green">eCourts Public API</span>
+        </div>
+        <div class="panel-body">
+          <div style="display: flex; gap: 10px; align-items: flex-end;">
+            <div style="flex: 1;">
+              <label for="inpCNR">Enter 16-Character CNR (Case Natural Number):</label>
+              <input type="text" id="inpCNR" value="MHNG01-004521-2024" placeholder="Example: MHNG01-004521-2024">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="lookupCaseCNR()">Search Case</button>
+          </div>
+
+          <div class="sample-links-bar" style="margin-top: 8px;">
+            <strong>Sample CNR numbers:</strong>
+            <a href="javascript:void(0)" onclick="fillCNR('MHNG01-004521-2024')">[Nagpur Civil Suit 142]</a>
+            <a href="javascript:void(0)" onclick="fillCNR('DLHC01-008912-2023')">[Delhi High Court Commercial Appeal]</a>
+            <a href="javascript:void(0)" onclick="fillCNR('MUPU02-001290-2024')">[Pune JMFC Cheque Dishonour]</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span id="caseTitleDisplay">Regular Civil Suit No. 142/2024</span>
+              <span class="badge badge-orange" id="caseStatusBadge">Pending</span>
+            </div>
+            <div class="panel-body">
+              <table class="gov-table">
+                <tbody>
+                  <tr>
+                    <td style="width: 35%; font-weight: bold;">Court Name:</td>
+                    <td id="courtNameDisplay">District &amp; Sessions Court, Nagpur</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Filing Date:</td>
+                    <td id="filingDateDisplay">14-02-2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Petitioner:</td>
+                    <td id="petitionerDisplay">Devendra S. Agrawal</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Respondent:</td>
+                    <td id="respondentDisplay">Vidarbha Trading Corporation</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Statutory Acts:</td>
+                    <td id="actsDisplay">Code of Civil Procedure, Order 39 Rule 1 &amp; 2</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Presiding Judge:</td>
+                    <td id="judgeDisplay">Shri R. K. Deshmukh, Civil Judge Senior Division</td>
+                  </tr>
+                  <tr style="background-color: #fff8e1;">
+                    <td style="font-weight: bold; color: #b71c1c;">Next Hearing Date:</td>
+                    <td id="nextHearingDisplay" style="font-weight: bold; color: #b71c1c;">28-09-2026 (Court Hall No. 4)</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <fieldset style="margin-top: 10px;">
+                <legend>Latest Interim Judicial Order Sheet</legend>
+                <div id="orderSheetDisplay" style="font-size: 11px; font-family: monospace; color: #333;">
+                  "12-08-2026: Counsel for Petitioner present. Interim order extended. Stand over to 28-09-2026 for final arguments on temporary injunction application."
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Court Proceedings Diary (Chronological Order)</span>
+              <span class="badge badge-blue">Verified NJDG Record</span>
+            </div>
+            <div class="panel-body">
+              <table class="gov-table" id="tableCaseHistory">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Procedural Stage</th>
+                    <th>Court Proceedings</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         5. TAB: BHULEKH LAND RECORDS EXPLORER
+         ================================================================== -->
+    <div class="tab-content" id="tab-bhulekh">
+      <div class="two-col-layout">
+        
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Digital India Land Records Gateway (DILRMP)</span>
+              <span class="badge badge-green">Public Records</span>
+            </div>
+            <div class="panel-body">
+              <div class="form-row">
+                <label for="selLandState">Select State Portal:</label>
+                <select id="selLandState" onchange="onStateChange()">
+                  <option value="MH">Maharashtra (Mahabhumi e-Records 7/12 &amp; 8A)</option>
+                  <option value="UP">Uttar Pradesh (UP Bhulekh Khatauni)</option>
+                  <option value="KA">Karnataka (Bhoomi RTC / RoR)</option>
+                </select>
+              </div>
+
+              <div style="display: flex; gap: 10px;">
+                <div class="form-row" style="flex: 1;">
+                  <label for="selLandDist">District:</label>
+                  <select id="selLandDist">
+                    <option value="Nagpur">Nagpur</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Thane">Thane</option>
+                  </select>
+                </div>
+                <div class="form-row" style="flex: 1;">
+                  <label for="inpTaluka">Taluka / Tehsil:</label>
+                  <input type="text" id="inpTaluka" value="Nagpur Rural">
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px;">
+                <div class="form-row" style="flex: 1;">
+                  <label for="inpVillage">Village:</label>
+                  <input type="text" id="inpVillage" value="Wadi">
+                </div>
+                <div class="form-row" style="flex: 1;">
+                  <label for="inpSurvey">Survey / Gat / Khasra No:</label>
+                  <input type="text" id="inpSurvey" value="142/3">
+                </div>
+              </div>
+
+              <div style="margin-top: 10px;">
+                <button type="button" class="btn btn-primary" onclick="fetchLandRecord()">Fetch Record of Rights (RoR)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Form VII / XII (Satbara Extract)</span>
+              <span class="badge badge-blue" id="lblLandLocation">Nagpur / Wadi</span>
+            </div>
+            <div class="panel-body">
+              <table class="gov-table">
+                <thead>
+                  <tr>
+                    <th>Occupant / Khatedar</th>
+                    <th>Area</th>
+                    <th>Soil Type</th>
+                    <th>Assessment (Rs)</th>
+                  </tr>
+                </thead>
+                <tbody id="tblLandBody">
+                  <tr>
+                    <td><strong>Kishore B. Raut</strong></td>
+                    <td>0.82 Ha</td>
+                    <td>Jirayat (Dry Crop)</td>
+                    <td>Rs. 24.50</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Suman K. Raut</strong> (Joint Holder)</td>
+                    <td>0.40 Ha</td>
+                    <td>Bagayat (Irrigated)</td>
+                    <td>Rs. 18.20</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <fieldset style="margin-top: 10px;">
+                <legend>Registered Mutation Entries (Ferfar Patrak)</legend>
+                <div id="divMutationNotes" style="font-size: 11px; line-height: 1.5;">
+                  <div style="border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+                    <strong>Mutation No. 892 (Registered Bank Charge):</strong> Charge created in favour of State Bank of India, Agricultural Credit Branch for INR 3,50,000.
+                  </div>
+                  <div>
+                    <strong>Mutation No. 741 (Testamentary Succession):</strong> Mutation sanctioned pursuant to succession under Section 149 of Maharashtra Land Revenue Code 1966.
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         6. TAB: STATUTORY COMPLIANCE & LIMITATION CALENDAR
+         ================================================================== -->
+    <div class="tab-content" id="tab-calendar">
+      <div class="countdown-box no-print">
+        <div>
+          <div style="font-size: 11px; font-weight: bold; color: #e65100;">CRITICAL STATUTORY DEADLINE (LIMITATION ACT, 1963)</div>
+          <div style="font-size: 14px; font-weight: bold; color: #bf360c;">Section 138 NI Act: Legal Notice Cure Window Expiry</div>
+          <div style="font-size: 11px; color: #666;">Drawer received notice on 02-09-2026. 15-Day cure period is running.</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="countdown-digits" id="cntTimer">02d : 14h : 22m : 40s</div>
+          <button type="button" class="btn btn-primary btn-sm" style="margin-top: 4px;" onclick="exportICS('sec138')">
+            Export Event to Calendar (.ics)
+          </button>
+        </div>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Limitation Period Calculator</span>
+            </div>
+            <div class="panel-body">
+              <div class="form-row">
+                <label for="selStatuteType">Select Statute / Legal Forum:</label>
+                <select id="selStatuteType" onchange="runLimitationCalc()">
+                  <option value="ni138">Section 138 NI Act (Cheque Dishonour)</option>
+                  <option value="consumer">Consumer Protection Act, 2019 (Sec 69 Limitation)</option>
+                  <option value="rti">RTI Act, 2005 (First Appeal against Non-Response)</option>
+                  <option value="mact">Motor Accident Claims Tribunal (Sec 166(3))</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="inpIncidentDate">Incident / Notice Date:</label>
+                <input type="date" id="inpIncidentDate" value="2026-09-01" onchange="runLimitationCalc()">
+              </div>
+
+              <fieldset style="margin-top: 15px;">
+                <legend>Statutory Calculation Result</legend>
+                <div id="calcOutputBox" style="font-size: 12px; line-height: 1.6;">
+                  <!-- Populated by JS -->
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Monitored Statutory Deadlines</span>
+              <button type="button" class="btn btn-default btn-sm" onclick="exportAllICS()">Export All (.ics)</button>
+            </div>
+            <div class="panel-body">
+              <table class="gov-table">
+                <thead>
+                  <tr>
+                    <th>Matter Reference</th>
+                    <th>Statutory Deadline</th>
+                    <th>Time Remaining</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Cheque Bounce (Sharma Matter)</strong><br><span style="font-size: 10px; color: #666;">Sec 138 Demand Notice</span></td>
+                    <td>17-09-2026</td>
+                    <td style="color: #c5221f; font-weight: bold;">2 Days</td>
+                    <td><span class="badge badge-red">Critical</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>RTI First Appeal (Municipal Roads)</strong><br><span style="font-size: 10px; color: #666;">Sec 19(1) First Appeal</span></td>
+                    <td>05-10-2026</td>
+                    <td style="color: #b06000; font-weight: bold;">19 Days</td>
+                    <td><span class="badge badge-orange">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Consumer Forum Complaint (Phone)</strong><br><span style="font-size: 10px; color: #666;">Sec 69 Limitation Period</span></td>
+                    <td>20-11-2026</td>
+                    <td style="color: #137333; font-weight: bold;">65 Days</td>
+                    <td><span class="badge badge-green">Compliant</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         7. TAB: CLIENT PRIVATE CASE ROOMS (CITIZEN ROLE)
+         ================================================================== -->
+    <div class="tab-content" id="tab-clientroom">
+      
+      <!-- VIEW A: Client Rooms List & Join Console -->
+      <div id="clientRoomsListView">
+        <!-- Join Room Form -->
+        <fieldset style="margin-bottom: 15px; background: #ffffff;">
+          <legend>Join Case Room by Invitation Code</legend>
+          <p style="font-size: 12px; color: #555; margin-bottom: 8px;">
+            If your advocate has provided you with a confidential room token code, enter it below to join the case room:
+          </p>
+          <div style="display: flex; gap: 8px; align-items: flex-end; max-width: 550px;">
+            <div style="flex: 1;">
+              <label for="inpJoinCode">Enter Invitation Code:</label>
+              <input type="text" id="inpJoinCode" placeholder="Example: NYAYA-701-K9">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="joinRoomByCode()">Join Case Room</button>
+          </div>
+          <div class="sample-links-bar" style="margin-top: 8px;">
+            <strong>Quick-test available codes to enter/join:</strong>
+            <a href="javascript:void(0)" onclick="quickJoinCode('NYAYA-701-K9')">[Enter Room: NYAYA-701-K9 (Dev Jain vs Patanjali)]</a>
+            <a href="javascript:void(0)" onclick="quickJoinCode('NYAYA-702-T8')">[Join Room: NYAYA-702-T8 (Tata vs Birla Matter)]</a>
+          </div>
+        </fieldset>
+
+        <!-- Rooms List Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <span>My Active Case Rooms (Client Access)</span>
+            <span class="badge badge-blue" id="clientRoomsCountBadge">1 Active Room</span>
+          </div>
+          <div class="panel-body">
+            <table class="gov-table">
+              <thead>
+                <tr>
+                  <th>Room Code</th>
+                  <th>Matter / Case Title</th>
+                  <th>Assigned Advocate</th>
+                  <th>Court / Forum</th>
+                  <th>Next Hearing</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="clientRoomsTableBody">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW B: Client Inside Room -->
+      <div id="clientRoomDetailView" style="display: none;">
+        <div style="margin-bottom: 12px;">
+          <button type="button" class="btn btn-default btn-sm" onclick="closeClientRoom()">&larr; Back to Case Rooms List</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span id="clientRoomHeaderTitle">Room #NYAYA-701: Dev Jain vs. Patanjali Ayurved Ltd</span>
+            <span class="badge badge-green">Privileged Channel (BSA 2023 Sec 132)</span>
+          </div>
+          <div class="panel-body" style="background-color: #f7f9fa; border-bottom: 1px solid #ccd1d9; padding: 8px 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+              <div>
+                <strong>Assigned Advocate:</strong> <span id="clientRoomLawyerName">Adv. Swati Kundu</span> &bull;
+                <strong>Court:</strong> <span id="clientRoomCourt">Civil Court Senior Division, Nagpur</span> &bull;
+                <strong>Next Hearing:</strong> <span id="clientRoomNextHearing">28-09-2026</span>
+              </div>
+              <div>
+                <span class="badge badge-blue" id="clientRoomCodeBadge">Code: NYAYA-701-K9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col-layout">
+          <!-- Document Upload Station -->
+          <div class="col-half">
+            <div class="panel">
+              <div class="panel-header">
+                <span>Requested Documents &amp; Upload Station</span>
+                <span class="badge badge-orange" id="clientRoomBadge">Status</span>
+              </div>
+              <div class="panel-body">
+                <p style="font-size: 12px; color: #555; margin-bottom: 12px;">
+                  Upload the documents requested by your advocate. You can pick from the case files in the <code>Example_Files</code> folder or choose a local file. Your lawyer will inspect and accept or reject each document.
+                </p>
+
+                <div id="clientDocRequestsContainer">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secure Chat -->
+          <div class="col-half">
+            <div class="panel">
+              <div class="panel-header">
+                <span>Direct Communication with Counsel</span>
+                <span class="badge badge-green">Encrypted</span>
+              </div>
+              <div class="panel-body" style="padding: 0;">
+                <div class="voice-chat-box" style="height: 440px;">
+                  <div class="voice-chat-log" id="clientChatLog">
+                    <!-- Messages rendered by JS -->
+                  </div>
+                  <div class="voice-input-row">
+                    <input type="text" id="inpClientMsg" placeholder="Type message to your advocate..." onkeypress="handleClientChatEnter(event)" style="flex: 1;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="sendClientMessage()">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================================================================
+         8. TAB: ADVOCATE CASE ROOMS & CREATION (ADVOCATE ROLE)
+         ================================================================== -->
+    <div class="tab-content" id="tab-lawyerrooms">
+      
+      <!-- VIEW A: Lawyer Rooms List & Room Creation -->
+      <div id="lawyerRoomsListView">
+        
+        <!-- Create Room Form -->
+        <fieldset style="margin-bottom: 15px; background: #ffffff;">
+          <legend>Create New Client Case Room &amp; Generate Invitation Code</legend>
+          <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="flex: 2; min-width: 200px;">
+              <label for="inpCreateTitle">Matter / Case Title:</label>
+              <input type="text" id="inpCreateTitle" placeholder="e.g. Tata Consumer Products vs. Patanjali Ayurved Ltd">
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+              <label for="inpCreateClient">Client Name:</label>
+              <input type="text" id="inpCreateClient" placeholder="e.g. Chinta Bhumika Reddy">
+            </div>
+            <div style="flex: 1; min-width: 160px;">
+              <label for="inpCreateCourt">Court / Forum:</label>
+              <input type="text" id="inpCreateCourt" placeholder="e.g. High Court Commercial Division">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="createNewCaseRoom()">+ Create Room &amp; Generate Code</button>
+          </div>
+        </fieldset>
+
+        <!-- Active Rooms Table -->
+        <div class="panel">
+          <div class="panel-header">
+            <span>Advocate Case Chambers</span>
+            <span class="badge badge-blue" id="lawyerRoomsCountBadge">2 Rooms Available</span>
+          </div>
+          <div class="panel-body">
+            <table class="gov-table">
+              <thead>
+                <tr>
+                  <th>Room Code (Token)</th>
+                  <th>Matter Title</th>
+                  <th>Client</th>
+                  <th>Court / Forum</th>
+                  <th>Documents Status</th>
+                  <th>Next Hearing</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="lawyerRoomsTableBody">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW B: Lawyer Inside Room -->
+      <div id="lawyerRoomDetailView" style="display: none;">
+        <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" class="btn btn-default btn-sm" onclick="closeLawyerRoom()">&larr; Back to Case Rooms List</button>
+          <span style="font-size: 12px; background: #e8f0fe; border: 1px solid #b6d4fe; padding: 3px 8px; border-radius: 2px;">
+            <strong>Share this code with client:</strong> <code id="shareCodeDisplay" style="font-weight: bold; color: #003366;">NYAYA-701-K9</code>
+          </span>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span id="lawyerRoomHeaderTitle">Case Chamber: Agrawal vs Vidarbha Trading Corporation</span>
+            <span class="badge badge-green">Token Active</span>
+          </div>
+          <div class="panel-body" style="background-color: #f7f9fa; border-bottom: 1px solid #ccd1d9; padding: 8px 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+              <div>
+                <strong>Client:</strong> <span id="lawyerRoomClientName">Dev Jain</span> &bull;
+                <strong>Court:</strong> <span id="lawyerRoomCourt">Civil Court Senior Division, Nagpur</span> &bull;
+                <strong>Next Hearing:</strong> <span id="lawyerRoomNextHearing">28-09-2026</span>
+              </div>
+              <div>
+                <span class="badge badge-orange" id="lawyerRoomReviewBadge">Pending Review</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col-layout">
+          <!-- Left: Document Requests & Verification Desk -->
+          <div class="col-half">
+            <div class="panel">
+              <div class="panel-header">
+                <span>Client Document Management &amp; Verification Desk</span>
+              </div>
+              <div class="panel-body">
+                <!-- Request new file form -->
+                <fieldset style="margin-bottom: 15px;">
+                  <legend>Request New Document from Client</legend>
+                  <div style="display: flex; gap: 8px; align-items: flex-end;">
+                    <div style="flex: 2;">
+                      <label for="inpNewDocName">Document / Record Name:</label>
+                      <input type="text" id="inpNewDocName" placeholder="e.g. Registered Sale Deed / Electricity Bill">
+                    </div>
+                    <div style="flex: 1;">
+                      <label for="inpNewDocDue">Due Date:</label>
+                      <input type="date" id="inpNewDocDue" value="2026-09-24">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="addLawyerFileRequest()">Request File</button>
+                  </div>
+                </fieldset>
+
+                <!-- Table with Accept and Reject buttons -->
+                <table class="gov-table">
+                  <thead>
+                    <tr>
+                      <th>Requested Document</th>
+                      <th>Due Date</th>
+                      <th>Client Submission</th>
+                      <th>Status</th>
+                      <th>Counsel Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="lawyerDocTableBody">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Advocate Chat View -->
+          <div class="col-half">
+            <div class="panel">
+              <div class="panel-header">
+                <span>Client Communication Thread</span>
+                <span class="badge badge-green">Encrypted</span>
+              </div>
+              <div class="panel-body" style="padding: 0;">
+                <div class="voice-chat-box" style="height: 440px;">
+                  <div class="voice-chat-log" id="lawyerChatLog">
+                    <!-- Messages rendered by JS -->
+                  </div>
+                  <div class="voice-input-row">
+                    <input type="text" id="inpLawyerMsg" placeholder="Type counsel message to client..." onkeypress="handleLawyerChatEnter(event)" style="flex: 1;">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="sendLawyerMessage()">Send as Counsel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================================================================
+         9. TAB: LITIGATION DOCKET (ADVOCATE ROLE)
+         ================================================================== -->
+    <div class="tab-content" id="tab-practicemgmt">
+      <div class="panel">
+        <div class="panel-header">
+          <span>Active Litigation Docket &amp; Matter Tracking</span>
+          <button type="button" class="btn btn-default btn-sm" onclick="promptNewCase()">+ Register New Matter</button>
+        </div>
+        <div class="panel-body">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Matter Title</th>
+                <th>CNR / Filing No.</th>
+                <th>Client</th>
+                <th>Court / Forum</th>
+                <th>Next Hearing</th>
+                <th>Procedural Stage</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyMatters">
+              <tr>
+                <td><strong>Agrawal vs. Vidarbha Trading</strong><br><span style="font-size: 10px; color: #666;">Civil Suit 142/2024</span></td>
+                <td><code>MHNG01-004521-2024</code></td>
+                <td>Dev Jain</td>
+                <td>Civil Court Senior Div, Nagpur</td>
+                <td style="color: #b71c1c; font-weight: bold;">28-09-2026</td>
+                <td><span class="badge badge-orange">Injunction Arguments</span></td>
+                <td><button type="button" class="btn btn-default btn-sm" onclick="openLawyerRoom('NYAYA-701')">Open Room</button></td>
+              </tr>
+              <tr>
+                <td><strong>State vs. K. M. Raut</strong><br><span style="font-size: 10px; color: #666;">BNS 316 Defense</span></td>
+                <td><code>MHNG02-009182-2025</code></td>
+                <td>Kishore Raut</td>
+                <td>JMFC Court No. 3, Nagpur</td>
+                <td style="color: #004080; font-weight: bold;">05-10-2026</td>
+                <td><span class="badge badge-blue">Framing of Charge</span></td>
+                <td><button type="button" class="btn btn-default btn-sm" onclick="openLawyerRoom('NYAYA-702')">Open Room</button></td>
+              </tr>
+              <tr>
+                <td><strong>RTI Appeal: Municipal Road Quality</strong><br><span style="font-size: 10px; color: #666;">Sec 19(1) First Appeal</span></td>
+                <td><code>NMC-RTI-891/2026</code></td>
+                <td>Dev Jain</td>
+                <td>Appellate Authority, NMC</td>
+                <td style="color: #137333; font-weight: bold;">12-10-2026</td>
+                <td><span class="badge badge-green">Appellate Hearing</span></td>
+                <td><button type="button" class="btn btn-default btn-sm" onclick="openLawyerRoom('NYAYA-705')">Open Room</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         10. TAB: BILLABLE HOURS & ASSOCIATE TASKS (ADVOCATE ROLE)
+         ================================================================== -->
+    <div class="tab-content" id="tab-billable">
+      <div class="two-col-layout">
+        
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Billable Time Recording Stopwatch</span>
+            </div>
+            <div class="panel-body">
+              <div style="background-color: #f7f9fa; border: 1px solid #ccd1d9; padding: 20px; text-align: center; margin-bottom: 15px;">
+                <div style="font-size: 11px; font-weight: bold; color: #666;">SESSION ELAPSED TIME</div>
+                <div style="font-family: Consolas, monospace; font-size: 32px; font-weight: bold; color: #003366; margin: 8px 0;" id="timerDisplay">00 : 00 : 00</div>
+              </div>
+
+              <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <div class="form-row" style="flex: 1;">
+                  <label for="selTimerMatter">Select Matter:</label>
+                  <select id="selTimerMatter">
+                    <option>Agrawal vs Vidarbha Trading (Suit 142)</option>
+                    <option>State vs K. M. Raut (JMFC 3)</option>
+                    <option>RTI Municipal Road Quality</option>
+                  </select>
+                </div>
+                <div class="form-row" style="flex: 1;">
+                  <label for="selTimerActivity">Activity Type:</label>
+                  <select id="selTimerActivity">
+                    <option>Drafting Pleading / Rejoinder</option>
+                    <option>Legal Research &amp; Precedents</option>
+                    <option>Client Conference &amp; Strategy</option>
+                    <option>Court Appearance</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-success" id="btnTimerStart" onclick="startTimer()">Start Timer</button>
+                <button type="button" class="btn btn-default" id="btnTimerPause" onclick="pauseTimer()">Pause</button>
+                <button type="button" class="btn btn-primary" onclick="recordBillableTime()">Log Entry (Rs 2,500/hr)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-half">
+          <div class="panel">
+            <div class="panel-header">
+              <span>Associate Task Delegation Roster</span>
+            </div>
+            <div class="panel-body">
+              <table class="gov-table">
+                <thead>
+                  <tr>
+                    <th>Task Description</th>
+                    <th>Associate</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Draft Injunction Rejoinder under O.39</td>
+                    <td>Adv. Swati Kundu</td>
+                    <td><span class="badge badge-red">High</span></td>
+                    <td>20-09-2026</td>
+                    <td><span class="badge badge-orange">In Progress</span></td>
+                  </tr>
+                  <tr>
+                    <td>Compile Precedents on Section 138 Notice</td>
+                    <td>Adv. Dev Jain</td>
+                    <td><span class="badge badge-green">Normal</span></td>
+                    <td>22-09-2026</td>
+                    <td><span class="badge badge-green">Completed</span></td>
+                  </tr>
+                  <tr>
+                    <td>Inspect 7/12 Extract Mutation Record at Tahsil</td>
+                    <td>Adv. Mansvi Khupse</td>
+                    <td><span class="badge badge-red">High</span></td>
+                    <td>24-09-2026</td>
+                    <td><span class="badge badge-orange">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td>Draft Consumer Commission Rejoinder</td>
+                    <td>Adv. Chinta Bhumika Reddy</td>
+                    <td><span class="badge badge-green">Normal</span></td>
+                    <td>25-09-2026</td>
+                    <td><span class="badge badge-blue">Assigned</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer no-print">
+    <div class="footer-inner">
+      <div>
+        <strong>न्यायसेतु | NYAYASETU</strong> — Compliance-First Legal Technology Prototype for India.<br>
+        Ramdeobaba University (RBU), Nagpur • IDEA Lab • Department of Computer Science &amp; Engineering.
+      </div>
+      <div>
+        <a href="javascript:void(0)">Terms of Use</a> |
+        <a href="javascript:void(0)">Privacy Policy</a> |
+        <a href="javascript:void(0)">Bar Council Compliance</a> |
+        <a href="javascript:void(0)">API Setu Gateway</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

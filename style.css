@@ -1,0 +1,652 @@
+/* ==========================================================================
+   NYAYASETU — National Legal Technology Portal
+   Theme: Standard Indian Government Portal (NIC / eCourts / Digital India)
+   Coding Style: Clean, human-written, semantic CSS (No over-engineered AI effects)
+   ========================================================================== */
+
+/* Basic Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #222222;
+  background-color: #f0f2f5;
+  line-height: 1.5;
+}
+
+a {
+  color: #004080;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   1. TOP GOV BAR & TRICOLOR STRIP
+   ========================================================================== */
+.top-gov-strip {
+  background-color: #1a252f;
+  color: #ffffff;
+  padding: 4px 20px;
+  font-size: 11px;
+}
+
+.top-gov-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-gov-left {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.tricolor-flag {
+  display: inline-block;
+  width: 15px;
+  height: 10px;
+  border: 1px solid #444;
+}
+.tricolor-flag .saffron { background: #FF9933; height: 3.3px; display: block; }
+.tricolor-flag .white { background: #FFFFFF; height: 3.3px; display: block; }
+.tricolor-flag .green { background: #138808; height: 3.4px; display: block; }
+
+.accessibility-tools button {
+  background: #2c3e50;
+  border: 1px solid #475569;
+  color: #ffffff;
+  padding: 1px 6px;
+  font-size: 11px;
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.tricolor-line {
+  height: 4px;
+  width: 100%;
+  display: flex;
+}
+.tricolor-line .t-orange { background-color: #FF9933; flex: 1; }
+.tricolor-line .t-white { background-color: #FFFFFF; flex: 1; }
+.tricolor-line .t-green { background-color: #138808; flex: 1; }
+
+/* ==========================================================================
+   2. MAIN HEADER (NIC GOV STYLE)
+   ========================================================================== */
+.main-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 12px 20px;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.emblem-img {
+  width: 44px;
+  height: auto;
+}
+
+.brand-text h1 {
+  font-size: 22px;
+  color: #003366;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.brand-text .hindi-title {
+  font-size: 13px;
+  color: #004080;
+  font-weight: bold;
+}
+
+.brand-text .tagline {
+  font-size: 11px;
+  color: #555555;
+  margin-top: 2px;
+}
+
+.header-right {
+  text-align: right;
+  font-size: 11px;
+  color: #444444;
+}
+
+.header-right .academic-badge {
+  background-color: #f7f9fa;
+  border: 1px solid #ccd1d9;
+  padding: 6px 12px;
+  border-radius: 3px;
+  line-height: 1.4;
+}
+
+.academic-badge strong {
+  color: #003366;
+}
+
+/* ==========================================================================
+   3. NAVIGATION BAR (CLASSIC NAVY BLUE)
+   ========================================================================== */
+.navbar {
+  background-color: #003366;
+  border-top: 2px solid #002244;
+  border-bottom: 3px solid #FF9933;
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  border-right: 1px solid #1a4d80;
+  padding: 10px 15px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.nav-link:hover {
+  background-color: #002244;
+}
+
+.nav-link.active {
+  background-color: #002244;
+  color: #ffffff;
+  border-bottom: 3px solid #FF9933;
+}
+
+.nav-link .sub-text {
+  font-size: 10px;
+  font-weight: normal;
+  color: #ccd9e6;
+  display: block;
+}
+
+/* Persona Switcher Buttons inside navbar right */
+.persona-toggle-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  gap: 5px;
+}
+
+.btn-persona {
+  background-color: #1a4d80;
+  color: #ffffff;
+  border: 1px solid #ccd1d9;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.btn-persona.active {
+  background-color: #FF9933;
+  color: #000000;
+  border-color: #d87b1c;
+}
+
+/* ==========================================================================
+   4. PAGE CONTAINER & BREADCRUMB
+   ========================================================================== */
+.page-container {
+  max-width: 1200px;
+  margin: 15px auto 30px auto;
+  padding: 0 15px;
+}
+
+.breadcrumb {
+  font-size: 11px;
+  color: #666666;
+  margin-bottom: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.statutory-alert-box {
+  background-color: #fffde7;
+  border: 1px solid #ffe082;
+  border-left: 4px solid #f57f17;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  color: #5d4037;
+}
+
+.statutory-alert-box strong {
+  color: #e65100;
+}
+
+/* Tab Content Visibility Management */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ==========================================================================
+   5. STANDARD GOVERNMENT PANELS & FIELDSETS
+   ========================================================================== */
+.panel {
+  background-color: #ffffff;
+  border: 1px solid #ccd1d9;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+
+.panel-header {
+  background-color: #003366;
+  color: #ffffff;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-body {
+  padding: 15px;
+}
+
+.two-col-layout {
+  display: flex;
+  gap: 15px;
+}
+
+.col-half {
+  flex: 1;
+}
+
+.col-sidebar {
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.col-main {
+  flex: 1;
+}
+
+/* Forms & Inputs */
+fieldset {
+  border: 1px solid #ccd1d9;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #fafbfc;
+  border-radius: 2px;
+}
+
+legend {
+  font-size: 12px;
+  font-weight: bold;
+  color: #003366;
+  padding: 0 6px;
+}
+
+.form-row {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 3px;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #aaaaaa;
+  border-radius: 2px;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  color: #111;
+  background-color: #ffffff;
+}
+
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #003366;
+  background-color: #fffef0;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Standard Buttons */
+.btn {
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #003366;
+  color: #ffffff;
+  border-color: #002244;
+}
+.btn-primary:hover {
+  background-color: #002244;
+}
+
+.btn-success {
+  background-color: #138808;
+  color: #ffffff;
+  border-color: #0d6105;
+}
+.btn-success:hover {
+  background-color: #0d6105;
+}
+
+.btn-default {
+  background-color: #e9ecef;
+  color: #333333;
+  border-color: #cccccc;
+}
+.btn-default:hover {
+  background-color: #dde2e6;
+}
+
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 11px;
+}
+
+.btn-danger {
+  background-color: #c5221f;
+  color: #ffffff;
+  border-color: #a51d1a;
+}
+.btn-danger:hover {
+  background-color: #a51d1a;
+}
+
+.room-card-box {
+  border: 1px solid #ccd1d9;
+  background-color: #ffffff;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-left: 4px solid #003366;
+}
+
+.room-card-box:hover {
+  background-color: #f8fafc;
+}
+
+/* Sample Quick Links */
+.sample-links-bar {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dotted #ccc;
+  font-size: 11px;
+}
+
+.sample-links-bar a {
+  display: inline-block;
+  margin-right: 6px;
+  margin-bottom: 4px;
+  background: #edf2f7;
+  border: 1px solid #cbd5e0;
+  padding: 2px 7px;
+  color: #2b6cb0;
+  border-radius: 2px;
+}
+.sample-links-bar a:hover {
+  background: #e2e8f0;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   6. GOVERNMENT STANDARD DATA TABLES
+   ========================================================================== */
+.gov-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.gov-table th {
+  background-color: #003366;
+  color: #ffffff;
+  padding: 7px 10px;
+  border: 1px solid #002244;
+  text-align: left;
+  font-weight: bold;
+}
+
+.gov-table td {
+  padding: 7px 10px;
+  border: 1px solid #d0d5dd;
+  background-color: #ffffff;
+}
+
+.gov-table tr:nth-child(even) td {
+  background-color: #f9fbfd;
+}
+
+.gov-table tr:hover td {
+  background-color: #f1f5f9;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 2px;
+}
+
+.badge-green { background-color: #e6f4ea; color: #137333; border: 1px solid #ceead6; }
+.badge-orange { background-color: #fef7e0; color: #b06000; border: 1px solid #feefc3; }
+.badge-red { background-color: #fce8e6; color: #c5221f; border: 1px solid #fad2cf; }
+.badge-blue { background-color: #e8f0fe; color: #1a73e8; border: 1px solid #d2e3fc; }
+
+/* ==========================================================================
+   7. COURT-READY DOCUMENT PLEADING PREVIEW
+   ========================================================================== */
+.pleading-paper {
+  background-color: #ffffff;
+  border: 2px solid #333333;
+  padding: 25px 30px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #000000;
+  position: relative;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.pleading-seal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  border: 2px dashed #8b0000;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 8px;
+  font-weight: bold;
+  color: #8b0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+  transform: rotate(-10deg);
+}
+
+.pleading-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  border-bottom: 1.5px solid #000000;
+  padding-bottom: 6px;
+  margin-bottom: 15px;
+}
+
+/* ==========================================================================
+   8. VOICE ASSISTANT INTERFACE (BHASHINI)
+   ========================================================================== */
+.voice-chat-box {
+  border: 1px solid #ccd1d9;
+  background-color: #fcfcfc;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.voice-chat-log {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-row {
+  max-width: 80%;
+  padding: 8px 12px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.chat-row.bot {
+  background-color: #ffffff;
+  border-left: 3px solid #003366;
+  align-self: flex-start;
+}
+
+.chat-row.user {
+  background-color: #e8f0fe;
+  border-right: 3px solid #1a73e8;
+  align-self: flex-end;
+}
+
+.chat-time {
+  font-size: 9px;
+  color: #777;
+  text-align: right;
+  margin-top: 4px;
+}
+
+.voice-input-row {
+  padding: 8px;
+  border-top: 1px solid #ccd1d9;
+  background-color: #f1f3f5;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   9. STATUTORY CALENDAR TIMER
+   ========================================================================== */
+.countdown-box {
+  background-color: #fff3e0;
+  border: 1px solid #ffe0b2;
+  border-left: 4px solid #e65100;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.countdown-digits {
+  font-family: Consolas, monospace;
+  font-size: 20px;
+  font-weight: bold;
+  color: #b71c1c;
+}
+
+/* ==========================================================================
+   10. FOOTER
+   ========================================================================== */
+.main-footer {
+  background-color: #1a252f;
+  color: #abb5be;
+  padding: 20px 0;
+  border-top: 3px solid #FF9933;
+  font-size: 11px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-inner a {
+  color: #cbd5e1;
+  margin: 0 5px;
+}
+
+/* Print Styles */
+@media print {
+  .top-gov-strip, .tricolor-line, .main-header, .navbar, .breadcrumb, .statutory-alert-box, .main-footer, .no-print {
+    display: none !important;
+  }
+  body {
+    background-color: #ffffff;
+    font-size: 12pt;
+  }
+  .pleading-paper {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
