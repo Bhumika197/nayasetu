@@ -1,32 +1,29 @@
-# NYAYASETU — Project Checkpoint & Resume Notes
-
-> **Saved on:** October 15, 2026  
-> **Author:** Ch Bhumika (`bhumika197`)  
-> **Project Repository:** `https://github.com/Bhumika197/nayasetu`  
-> **Hard Deadline:** October 16, 2026 — 9:00 PM IST  
-
----
-
-## ⚠️ Critical Review & Personal Feedback (October 15)
-
-```
-All of this is ai bullshit 
+# All of this is ai bullshit 
 personal take down: 
 changes: 
 1) Ui
 2) add more features 
-3) remove useless features
+3) remove useless features 
 
 problems:
-1. The complete architecture looks messed up need to sort it out and give a new path.
-2. The way it is extracting answers shows it is a bad system like the models are not trained efficiently even though there are preexisting models used the main problem is that the models are not implemented properly.
-3. The answers are not at all upto the marks.
-4. The given webpages in the answers are not working properly.
-5. The pipeline needs an obvious revision.
+
+The complete architecture looks messed up need to sort it out and give a new path.
+The way it is extracting answers shows it is a bad systes like the models are not trained effiently even though the are preexesting models used the main problem is that the models are not impemented properly.
+The answers are not at all upto the marks.
+The given webpages in the answers are not working properly.
+The pipline needs an obvious revision 
 
 find out how am I supposed to do this and update the md file.
 deadline (16.10.2026 - 9pm ist)
-```
+
+---
+
+# NYAYASETU — Project Checkpoint & Resume Notes
+
+> **Author:** Ch Bhumika (`bhumika197`)  
+> **Project Repository:** `https://github.com/Bhumika197/nayasetu`  
+> **Hard Deadline:** October 16, 2026 — 9:00 PM IST  
+
 
 ---
 
