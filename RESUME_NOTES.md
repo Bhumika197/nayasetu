@@ -103,3 +103,13 @@ When you resume building, here are the exact planned milestones:
 - **Repository Name:** `nayasetu`
 - **Remote URL:** `https://github.com/bhumika197/nayasetu.git`
 - **Branch:** `main`
+
+---
+
+## 📝 6. Personal Notes & Priority Changes for Next Session
+- **Review**: Keep it grounded, practical, and clean.
+- **Priorities for Next Session**:
+  1. **UI**: Overhaul the visual interface and make it sleek, intuitive, and modern.
+  2. **Add more features**: Focus on impactful citizen features (custom query builders, direct scheme grievance filing forms, localized language assistance).
+  3. **Remove useless features**: Strip out unnecessary bloat or complex modules that don't serve the core mission.
+
