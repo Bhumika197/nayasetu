@@ -1,0 +1,54 @@
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+
+# Node.js dependencies and build outputs
+node_modules/
+dist/
+build/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python virtual environment and bytecode
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Private uploads and document processing
+uploads/
+quarantine/
+storage/private/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.tiff
+
+# Database storage and dumps
+*.sql.gz
+*.dump
+postgres_data/
+
+# OS specific files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
