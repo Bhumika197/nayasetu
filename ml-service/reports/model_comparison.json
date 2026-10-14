@@ -1,0 +1,229 @@
+{
+  "timestamp": "2026-10-14T17:23:53.001347",
+  "best_model": "MultinomialNB",
+  "best_macro_f1": 0.08666666666666667,
+  "models": {
+    "LogisticRegression": {
+      "accuracy": 0.16,
+      "macro_f1": 0.0696,
+      "macro_precision": 0.0578,
+      "macro_recall": 0.1333,
+      "report": {
+        "agricultural_insurance": {
+          "precision": 0.11764705882352941,
+          "recall": 1.0,
+          "f1-score": 0.21052631578947367,
+          "support": 2.0
+        },
+        "civil_dispute": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "consumer_dispute": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.5,
+          "support": 2.0
+        },
+        "cybercrime_reporting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "education": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "employment_wages": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "family_dispute": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "government_benefits": {
+          "precision": 0.25,
+          "recall": 0.5,
+          "f1-score": 0.3333333333333333,
+          "support": 2.0
+        },
+        "health_services": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "legal_aid": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "other_or_unclear": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "property_land": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "public_service_grievance": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "rti_request": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "tenancy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "accuracy": 0.16,
+        "macro avg": {
+          "precision": 0.05784313725490196,
+          "recall": 0.13333333333333333,
+          "f1-score": 0.0695906432748538,
+          "support": 25.0
+        },
+        "weighted avg": {
+          "precision": 0.06941176470588235,
+          "recall": 0.16,
+          "f1-score": 0.08350877192982456,
+          "support": 25.0
+        }
+      }
+    },
+    "MultinomialNB": {
+      "accuracy": 0.16,
+      "macro_f1": 0.0867,
+      "macro_precision": 0.0722,
+      "macro_recall": 0.1333,
+      "report": {
+        "agricultural_insurance": {
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1-score": 0.4,
+          "support": 2.0
+        },
+        "civil_dispute": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "consumer_dispute": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.5,
+          "support": 2.0
+        },
+        "cybercrime_reporting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "education": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "employment_wages": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "family_dispute": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "government_benefits": {
+          "precision": 0.3333333333333333,
+          "recall": 0.5,
+          "f1-score": 0.4,
+          "support": 2.0
+        },
+        "health_services": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "legal_aid": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "other_or_unclear": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "property_land": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "public_service_grievance": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "rti_request": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "tenancy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "accuracy": 0.16,
+        "macro avg": {
+          "precision": 0.07222222222222222,
+          "recall": 0.13333333333333333,
+          "f1-score": 0.08666666666666667,
+          "support": 25.0
+        },
+        "weighted avg": {
+          "precision": 0.08666666666666666,
+          "recall": 0.16,
+          "f1-score": 0.10400000000000001,
+          "support": 25.0
+        }
+      }
+    }
+  }
+}

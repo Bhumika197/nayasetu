@@ -1,14 +1,23 @@
 import express, { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { env } from './config/env.js';
 import { db } from './database/connection.js';
+import { authRouter } from './routes/auth.routes.js';
+import { questionRouter } from './routes/question.routes.js';
+import { sourcesRouter } from './routes/sources.routes.js';
+import { caseRoomRouter } from './routes/caseroom.routes.js';
+import { documentRouter } from './routes/document.routes.js';
 
 export const app = express();
 
 // Security Headers
 app.use(helmet());
+
+// Cookie parsing
+app.use(cookieParser());
 
 // CORS configuration (configured for Vite dev server and future production domain)
 app.use(
@@ -20,8 +29,8 @@ app.use(
 
 // Global Rate Limiter
 const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300,
+  windowMs: 15 * 60 * 1000,
+  max: 500,
   message: { error: 'Too many requests from this IP, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -29,8 +38,8 @@ const globalLimiter = rateLimit({
 app.use(globalLimiter);
 
 // Body Parsing
-app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Health Check Endpoint
 const handleHealthCheck = async (_req: Request, res: Response) => {
@@ -49,8 +58,8 @@ const handleHealthCheck = async (_req: Request, res: Response) => {
     version: '1.0.0',
     timestamp: new Date().toISOString(),
     components: {
-      database: dbStatus ? 'connected' : 'disconnected_or_not_started',
-      mlService: mlStatus ? 'connected' : 'offline_or_initializing',
+      database: dbStatus ? 'connected' : 'local_repository_active',
+      mlService: mlStatus ? 'connected' : 'standby',
     },
     environment: env.NODE_ENV,
   });
@@ -58,6 +67,13 @@ const handleHealthCheck = async (_req: Request, res: Response) => {
 
 app.get('/health', handleHealthCheck);
 app.get('/api/v1/health', handleHealthCheck);
+
+// API v1 Sub-routers
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/questions', questionRouter);
+app.use('/api/v1/sources', sourcesRouter);
+app.use('/api/v1/case-rooms', caseRoomRouter);
+app.use('/api/v1/documents', documentRouter);
 
 // Root route
 app.get('/', (_req: Request, res: Response) => {

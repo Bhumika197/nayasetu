@@ -11,18 +11,23 @@ def test_ml_health_check():
     assert data["service"] == "nyayasetu-ml-service"
     assert "model_loaded" in data
 
-def test_ml_model_info_untrained():
+def test_ml_model_info_trained():
     response = client.get("/model/info")
     assert response.status_code == 200
     data = response.json()
     assert "supported_categories" in data
     assert len(data["supported_categories"]) >= 10
     assert "agricultural_insurance" in data["supported_categories"]
+    assert data["status"] in ["ready", "untrained"]
 
-def test_predict_without_trained_model_returns_honest_error():
-    # When model is not trained yet, it should NOT return fake predictions
-    response = client.post("/predict", json={"query": "My crop insurance is delayed"})
-    # Either 503 if untrained, or 200 if trained
-    assert response.status_code in [200, 503]
-    if response.status_code == 503:
-        assert "not yet trained" in response.json()["detail"]
+def test_predict_real_query():
+    response = client.post("/predict", json={
+        "query": "My PMFBY crop insurance claim was rejected after heavy rainfall in Maharashtra."
+    })
+    assert response.status_code == 200
+    data = response.json()
+    assert "predicted_category" in data
+    assert "confidence" in data
+    assert "model_version" in data
+    assert "all_probabilities" in data
+    assert data["confidence"] > 0

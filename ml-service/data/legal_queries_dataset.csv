@@ -1,0 +1,82 @@
+query,issue_category,language,source,review_status
+My crop was damaged due to unseasonal heavy rainfall in Maharashtra. PMFBY claim status is still pending after 3 months.,agricultural_insurance,en,nyayasetu_curated_v1,verified
+How do I report localized crop loss within 72 hours on the PMFBY portal?,agricultural_insurance,en,nyayasetu_curated_v1,verified
+The insurance company rejected my cotton crop insurance claim citing survey mismatch.,agricultural_insurance,en,nyayasetu_curated_v1,verified
+Bank deducted PMFBY crop insurance premium from my KCC account but no policy was issued.,agricultural_insurance,en,nyayasetu_curated_v1,verified
+District agricultural officer is not conducting crop cutting experiments for drought claims.,agricultural_insurance,en,nyayasetu_curated_v1,verified
+Helpline for Pradhan Mantri Fasal Bima Yojana is unreachable and payment is delayed.,agricultural_insurance,en,nyayasetu_curated_v1,verified
+Where can I file a grievance against universal sompo insurance for not settling soya bean claim?,agricultural_insurance,en,nyayasetu_curated_v1,verified
+Post-harvest loss assessment for paddy submerged in flood water under government insurance.,agricultural_insurance,en,nyayasetu_curated_v1,verified
+My PM-KISAN 16th installment has not credited to my bank account due to e-KYC mismatch.,government_benefits,en,nyayasetu_curated_v1,verified
+Old age pension under NSAP has stopped suddenly for my mother without any reason.,government_benefits,en,nyayasetu_curated_v1,verified
+How to update Aadhaar linking with ration card for subsidized grains under NFSA?,government_benefits,en,nyayasetu_curated_v1,verified
+Maternity benefit under Pradhan Mantri Matru Vandana Yojana is rejected by anganwadi.,government_benefits,en,nyayasetu_curated_v1,verified
+Direct Benefit Transfer (DBT) failed with error NPCI mapper not linked to account.,government_benefits,en,nyayasetu_curated_v1,verified
+Widow pension application status has been pending at tehsil office for six months.,government_benefits,en,nyayasetu_curated_v1,verified
+Application for Antyodaya Anna Yojana (AAY) ration card was denied by food supply officer.,government_benefits,en,nyayasetu_curated_v1,verified
+"I bought a mobile phone from an e-commerce website that stopped working within 2 days, and seller refuses refund.",consumer_dispute,en,nyayasetu_curated_v1,verified
+Car dealership sold me a defective vehicle with engine trouble and refuses warranty replacement.,consumer_dispute,en,nyayasetu_curated_v1,verified
+How to lodge a grievance on INGRAM National Consumer Helpline for airline cancellation refund?,consumer_dispute,en,nyayasetu_curated_v1,verified
+Private hospital overcharged for medicines beyond MRP during emergency hospitalization.,consumer_dispute,en,nyayasetu_curated_v1,verified
+Builder has delayed handing over flat possession by 2 years despite full payment.,consumer_dispute,en,nyayasetu_curated_v1,verified
+Broadband internet provider charged monthly fee despite zero connection for 20 days.,consumer_dispute,en,nyayasetu_curated_v1,verified
+Misleading advertisement by coaching institute claiming guaranteed 100 percent placement.,consumer_dispute,en,nyayasetu_curated_v1,verified
+My employer has withheld my last 3 months salary and relieving letter after I resigned.,employment_wages,en,nyayasetu_curated_v1,verified
+Company is not depositing EPF provident fund contributions deducted from my monthly salary.,employment_wages,en,nyayasetu_curated_v1,verified
+I was terminated from service without mandatory one month notice or retrenchment compensation.,employment_wages,en,nyayasetu_curated_v1,verified
+Factory owner refuses to pay overtime wages for 12 hour daily shifts.,employment_wages,en,nyayasetu_curated_v1,verified
+Employer refuses to release gratuity payment after completing 6 years of continuous service.,employment_wages,en,nyayasetu_curated_v1,verified
+Contractual workers in government hospital denied minimum wages notified by state labor commission.,employment_wages,en,nyayasetu_curated_v1,verified
+Female employee denied statutory paid maternity leave under Maternity Benefit Act.,employment_wages,en,nyayasetu_curated_v1,verified
+Neighbor has illegally encroached on our ancestral agriculture land boundary in village.,property_land,en,nyayasetu_curated_v1,verified
+Tehsildar office has not updated mutation entry (Dakhil Kharij) despite registered sale deed.,property_land,en,nyayasetu_curated_v1,verified
+How to obtain certified 7/12 extract or Jamabandi land record from revenue portal?,property_land,en,nyayasetu_curated_v1,verified
+Seller forged documents and sold the same residential plot to two different buyers.,property_land,en,nyayasetu_curated_v1,verified
+Gram panchayat is constructing a public drain through my registered private patta land.,property_land,en,nyayasetu_curated_v1,verified
+Demarcation of farm land boundaries delayed by government revenue surveyor.,property_land,en,nyayasetu_curated_v1,verified
+Landlord has refused to return my security deposit of 50000 rupees after vacating flat.,tenancy,en,nyayasetu_curated_v1,verified
+Owner disconnected water and electricity supply to force immediate eviction without notice.,tenancy,en,nyayasetu_curated_v1,verified
+Landlord suddenly increased house rent by 30 percent in violation of registered rental agreement.,tenancy,en,nyayasetu_curated_v1,verified
+Tenant has stopped paying monthly rent for 6 months and refuses to vacate commercial premises.,tenancy,en,nyayasetu_curated_v1,verified
+Notice period requirements for eviction under Model Tenancy Act guidelines.,tenancy,en,nyayasetu_curated_v1,verified
+How to file maintenance petition under Section 125 CrPC for wife and minor child?,family_dispute,en,nyayasetu_curated_v1,verified
+Seeking emergency protection order and residence order under Domestic Violence Act 2005.,family_dispute,en,nyayasetu_curated_v1,verified
+"Father passed away without will, how are ancestral properties divided between daughters and sons?",family_dispute,en,nyayasetu_curated_v1,verified
+Mutual consent divorce procedure and statutory waiting cooling off period under Hindu Marriage Act.,family_dispute,en,nyayasetu_curated_v1,verified
+Grandparents denied visitation rights to see minor grandchild after parental separation.,family_dispute,en,nyayasetu_curated_v1,verified
+Public Information Officer (PIO) failed to reply to my RTI application within 30 days deadline.,rti_request,en,nyayasetu_curated_v1,verified
+How to draft and file a First Appeal under Section 19(1) of Right to Information Act?,rti_request,en,nyayasetu_curated_v1,verified
+Municipal corporation rejected RTI query claiming information is exempt under section 8.,rti_request,en,nyayasetu_curated_v1,verified
+Format for seeking road tender sanction files and expenditure receipts under RTI Act.,rti_request,en,nyayasetu_curated_v1,verified
+State Information Commission has not listed second appeal hearing for over one year.,rti_request,en,nyayasetu_curated_v1,verified
+"I lost 75000 rupees in an online credit card OTP phishing scam, transaction occurred 2 hours ago.",cybercrime_reporting,en,nyayasetu_curated_v1,verified
+Someone created a fake profile with my photographs on social media and is extorting money.,cybercrime_reporting,en,nyayasetu_curated_v1,verified
+Received fake WhatsApp message claiming electricity connection will be cut off with malicious APK.,cybercrime_reporting,en,nyayasetu_curated_v1,verified
+Unauthorized UPI debit transactions happened while phone was in my possession.,cybercrime_reporting,en,nyayasetu_curated_v1,verified
+How to register urgent financial fraud complaint on national cybercrime portal helpline 1930?,cybercrime_reporting,en,nyayasetu_curated_v1,verified
+Municipal corporation has not repaired massive open pothole on main road causing accidents.,public_service_grievance,en,nyayasetu_curated_v1,verified
+Drinking water pipeline contaminated with sewage water in municipal ward for past 2 weeks.,public_service_grievance,en,nyayasetu_curated_v1,verified
+Streetlights in residential colony non-functional for past 3 months despite multiple complaints.,public_service_grievance,en,nyayasetu_curated_v1,verified
+Electricity board sending inflated commercial electricity bills for a locked residential house.,public_service_grievance,en,nyayasetu_curated_v1,verified
+Garbage dumping ground created right in front of primary school gate causing health hazard.,public_service_grievance,en,nyayasetu_curated_v1,verified
+Borrower took personal loan of 3 lakh rupees on promissory note and now refuses repayment.,civil_dispute,en,nyayasetu_curated_v1,verified
+Contractor abandoned house renovation midway after taking 80 percent advance payment.,civil_dispute,en,nyayasetu_curated_v1,verified
+How to file a civil suit for permanent injunction against unauthorized construction on common passage?,civil_dispute,en,nyayasetu_curated_v1,verified
+Breach of commercial supply contract and non-delivery of raw materials on agreed schedule.,civil_dispute,en,nyayasetu_curated_v1,verified
+Who is eligible for free legal aid representation through NALSA and Taluk Legal Services?,legal_aid,en,nyayasetu_curated_v1,verified
+Can an accused person in police custody without funds get free defense advocate from DLSA?,legal_aid,en,nyayasetu_curated_v1,verified
+Income limit criteria for women and SC/ST citizens to apply for Legal Services Authority assistance.,legal_aid,en,nyayasetu_curated_v1,verified
+How to approach Lok Adalat for pre-litigation settlement of bank loan recovery dispute?,legal_aid,en,nyayasetu_curated_v1,verified
+Private school refused admission under 25 percent RTE quota for economically weaker section.,education,en,nyayasetu_curated_v1,verified
+University is withholding original graduation degree certificate over disputed laboratory dues.,education,en,nyayasetu_curated_v1,verified
+State government post-matric scholarship amount not disbursed to college account for 2 semesters.,education,en,nyayasetu_curated_v1,verified
+Deemed university arbitrarily hiked examination fees right before final semester exams.,education,en,nyayasetu_curated_v1,verified
+Hospital empanelled under Ayushman Bharat PM-JAY refused cashless treatment for cardiac surgery.,health_services,en,nyayasetu_curated_v1,verified
+"Patient died due to incorrect blood transfusion in private nursing home, seeking medical negligence enquiry.",health_services,en,nyayasetu_curated_v1,verified
+Diagnostic pathology lab provided wrong cancer biopsy report causing unnecessary chemotherapy trauma.,health_services,en,nyayasetu_curated_v1,verified
+Government district hospital lacks essential anti-venom medicine in rural emergency ward.,health_services,en,nyayasetu_curated_v1,verified
+Hello I need some information please help me.,other_or_unclear,en,nyayasetu_curated_v1,verified
+What are the timings of the office?,other_or_unclear,en,nyayasetu_curated_v1,verified
+I am feeling very stressed today about my situation.,other_or_unclear,en,nyayasetu_curated_v1,verified
+Please call me back immediately.,other_or_unclear,en,nyayasetu_curated_v1,verified
+Someone told me something happened somewhere last week.,other_or_unclear,en,nyayasetu_curated_v1,verified
