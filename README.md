@@ -7,11 +7,11 @@ changes:
 
 problems:
 
-The complete architecture looks messed up need to sort it out and give a new path.
-The way it is extracting answers shows it is a bad systes like the models are not trained effiently even though the are preexesting models used the main problem is that the models are not impemented properly.
-The answers are not at all upto the mark.
-The given webpages in the answers are not working properly.
-The pipline needs an obvious revision 
+1) The complete architecture looks messed up need to sort it out and give a new path.
+2) The way it is extracting answers shows it is a bad systes like the models are not trained effiently even though the are preexesting models used the main problem is that the models are not impemented properly.
+3) The answers are not at all upto the mark.
+4) The given webpages in the answers is not working properly.
+5) The pipline needs an obvious revision.
 
 find out how am I supposed to do this and update the md file.
 deadline (16.10.2026 - 9pm ist)
