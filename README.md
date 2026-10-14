@@ -9,7 +9,7 @@ problems:
 
 The complete architecture looks messed up need to sort it out and give a new path.
 The way it is extracting answers shows it is a bad systes like the models are not trained effiently even though the are preexesting models used the main problem is that the models are not impemented properly.
-The answers are not at all upto the marks.
+The answers are not at all upto the mark.
 The given webpages in the answers are not working properly.
 The pipline needs an obvious revision 
 
