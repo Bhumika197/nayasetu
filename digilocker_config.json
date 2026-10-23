@@ -1,0 +1,8 @@
+{
+  "clientId": "",
+  "clientSecret": "",
+  "environment": "production",
+  "redirectUri": "http://localhost:3000/callback.html",
+  "scope": "openid profile in.gov.uidai:eaadhaar",
+  "registeredEntity": "Ramdeobaba University (RBU) - IDEA Lab NyayaSetu"
+}

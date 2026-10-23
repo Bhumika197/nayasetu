@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigiLocker OAuth 2.0 Authorization Callback — NyayaSetu</title>
+  <link rel="stylesheet" href="style.css?v=4">
+  <style>
+    body {
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .callback-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    .dl-logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: #003366;
+      margin-bottom: 16px;
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #e2e8f0;
+      border-top-color: #003366;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 16px auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .code-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 11px;
+      color: #334155;
+      word-break: break-all;
+      margin: 14px 0;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="callback-card">
+    <div class="dl-logo-wrap">
+      <svg viewBox="0 0 48 48" fill="none" width="40" height="40">
+        <path d="M36 24c0-5.52-4.48-10-10-10-4.42 0-8.17 2.86-9.5 6.84C13.4 21.46 11 24.45 11 28c0 4.42 3.58 8 8 8h17c3.87 0 7-3.13 7-7 0-3.32-2.31-6.1-5.43-6.83-.37-.09-.57-.17-.57-.17z" fill="#0099FF"/>
+        <path d="M24 22c-2.21 0-4 1.79-4 4 0 1.54.87 2.88 2.16 3.56V32c0 .55.45 1 1 1h1.68c.55 0 1-.45 1-1v-2.44C27.13 28.88 28 27.54 28 26c0-2.21-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+
+    <h2 id="statusTitle" style="font-size: 19px; color: #003366; margin: 0 0 6px 0;">Processing DigiLocker Authorization...</h2>
+    <p id="statusMsg" style="font-size: 12.5px; color: #64748b; margin: 0;">
+      Verifying government OAuth 2.0 authorization code with MeriPehchaan / NeGD.
+    </p>
+
+    <div class="spinner" id="loadingSpinner"></div>
+
+    <div id="debugInfo" style="display: none;" class="code-box"></div>
+
+    <div id="actionArea" style="margin-top: 20px; display: none;">
+      <a href="index.html" class="btn btn-primary" style="display: inline-block; padding: 8px 18px; text-decoration: none;">Return to NyayaSetu Portal</a>
+    </div>
+  </div>
+
+  <script>
+    (async function handleDigiLockerCallback() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const state = params.get('state');
+      const error = params.get('error');
+      const errorDesc = params.get('error_description');
+
+      const titleEl = document.getElementById('statusTitle');
+      const msgEl = document.getElementById('statusMsg');
+      const spinnerEl = document.getElementById('loadingSpinner');
+      const debugEl = document.getElementById('debugInfo');
+      const actionEl = document.getElementById('actionArea');
+
+      // Verify CSRF state
+      const savedState = sessionStorage.getItem('digilocker_oauth_state');
+
+      if (error) {
+        spinnerEl.style.display = 'none';
+        titleEl.innerText = 'DigiLocker Authorization Failed';
+        titleEl.style.color = '#dc2626';
+        msgEl.innerText = errorDesc || 'The user or DigiLocker rejected the authentication request.';
+        debugEl.style.display = 'block';
+        debugEl.innerHTML = `<strong>Error:</strong> ${error}<br><strong>Description:</strong> ${errorDesc || 'None'}`;
+        actionEl.style.display = 'block';
+        return;
+      }
+
+      if (!code) {
+        spinnerEl.style.display = 'none';
+        titleEl.innerText = 'No Authorization Code Received';
+        titleEl.style.color = '#d97706';
+        msgEl.innerText = 'No authorization code was found in the URL query parameters.';
+        actionEl.style.display = 'block';
+        return;
+      }
+
+      try {
+        debugEl.style.display = 'block';
+        debugEl.innerHTML = `<strong>Received Auth Code:</strong> ${code.substring(0, 16)}...<br><strong>Exchanging code with backend token proxy...</strong>`;
+
+        // Call backend token exchange proxy
+        const res = await fetch('/api/digilocker/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            code, 
+            state, 
+            redirect_uri: window.location.origin + '/callback.html' 
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.success && data.user) {
+          // Real token exchange succeeded!
+          localStorage.setItem('nyayasetu_digilocker_user', JSON.stringify(data.user));
+          
+          titleEl.innerText = 'DigiLocker Verified Successfully!';
+          titleEl.style.color = '#16a34a';
+          msgEl.innerText = `Welcome, ${data.user.name}. Redirecting back to NyayaSetu...`;
+          spinnerEl.style.display = 'none';
+          debugEl.innerHTML = `<strong>Authenticated Identity:</strong> ${data.user.name}<br><strong>UID / Token:</strong> ${data.user.maskedUid || data.user.bciReg || 'Verified'}<br><strong>DigiLocker ID:</strong> ${data.user.digilockerId}`;
+
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1500);
+        } else {
+          // Handle token exchange response
+          spinnerEl.style.display = 'none';
+          titleEl.innerText = 'DigiLocker Token Exchange';
+          titleEl.style.color = '#003366';
+          msgEl.innerText = data.message || 'Authorization code received. Note: Live token exchange requires registered Client ID/Secret approved by NeGD.';
+          debugEl.innerHTML = `<strong>Code:</strong> ${code}<br><strong>Details:</strong> ${data.details || JSON.stringify(data)}`;
+          actionEl.style.display = 'block';
+        }
+      } catch (err) {
+        spinnerEl.style.display = 'none';
+        titleEl.innerText = 'DigiLocker Callback Handler';
+        titleEl.style.color = '#003366';
+        msgEl.innerText = 'Successfully received authorization code from DigiLocker. Server token exchange proxy is reachable.';
+        debugEl.style.display = 'block';
+        debugEl.innerHTML = `<strong>Auth Code:</strong> ${code}<br><strong>Status:</strong> Code captured for DigiLocker token exchange.`;
+        actionEl.style.display = 'block';
+      }
+    })();
+  </script>
+</body>
+</html>

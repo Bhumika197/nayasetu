@@ -1,4 +1,20 @@
+# Operating System files
 .DS_Store
 Thumbs.db
+
+# Dependencies
 node_modules/
+
+# Logs
 *.log
+npm-debug.log*
+
+# Vercel Deployment & Build artifacts
+.vercel
+
+# Environment variables & secrets (DO NOT COMMIT SECRETS TO GITHUB)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

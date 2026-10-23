@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NyayaSetu — National Legal Literacy & Case Tracking Portal</title>
   <meta name="description" content="National Legal Literacy, Case Tracking and Compliance Portal for Citizens and Legal Practitioners in India.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -25,6 +25,8 @@
       </div>
 
       <div class="accessibility-tools">
+        <span id="topStripDigiLockerStatus" style="color: #86efac; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;"></span>
+        <span id="topStripSeparator" style="margin: 0 5px; display: none;">|</span>
         <span>Language: <strong>English / हिन्दी</strong></span>
         <span style="margin: 0 5px;">|</span>
         <span>Text Size:</span>
@@ -63,6 +65,11 @@
           <strong>Ramdeobaba University (RBU), Nagpur</strong><br>
           Department of Computer Science & Engineering (IDEA Lab)<br>
           <span style="font-size: 10px; color: #666;">Team: Dev Jain, Mansvi Khupse, Swati Kundu, Chinta Bhumika Reddy</span>
+        </div>
+
+        <!-- DigiLocker Identity Authentication Widget -->
+        <div class="digilocker-header-widget" id="digilockerHeaderWidget">
+          <!-- Populated by app.js: Sign In button or Verified user pill -->
         </div>
       </div>
     </div>
@@ -117,7 +124,7 @@
 
       <!-- Persona Switcher -->
       <div class="persona-toggle-wrap">
-        <span style="color: #ccd9e6; font-size: 11px; margin-right: 4px;">Role:</span>
+        <span class="role-label">Portal Role:</span>
         <button class="btn-persona active" id="btnRoleCitizen" onclick="switchRole('citizen')">Citizen</button>
         <button class="btn-persona" id="btnRoleAdvocate" onclick="switchRole('advocate')">Advocate Desk</button>
       </div>
@@ -129,7 +136,7 @@
 
     <!-- Breadcrumb Navigation -->
     <div class="breadcrumb no-print" id="breadcrumbTrail">
-      Home &gt; Citizen Services &gt; <strong>AI Legal & Tax Literacy Assistant</strong>
+      Home &gt; Citizen Services &gt; <strong>Statutory Grievance &amp; Legal Guidance Portal</strong>
     </div>
 
     <!-- Statutory Disclaimer Notice -->
@@ -146,32 +153,41 @@
         <div class="col-half">
           <div class="panel">
             <div class="panel-header">
-              <span>Legal & Tax Query Classification</span>
-              <span class="badge badge-green">Free Bhashini / Gemini Engine</span>
+              <span>Legal Grievance &amp; Statutory Classification</span>
+              <span class="badge badge-blue">Official Statutory Reference Engine</span>
             </div>
             <div class="panel-body">
-              <p style="font-size: 12px; color: #555; margin-bottom: 10px;">
-                Enter your grievance in simple words (English, Hindi, Marathi). The system identifies the governing acts, applicable legal sections, court jurisdiction, and actionable remedies.
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px;">
+                Enter your grievance in simple words (English, Hindi, Marathi). Powered directly by your AI API Key to identify governing statutes, sections, court jurisdiction, and actionable remedies.
               </p>
+
+              <!-- AI API Key Configuration -->
+              <div class="api-key-box" style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label for="inpApiKey" style="font-size: 11.5px; font-weight: 600; color: var(--text-main); margin-bottom: 0;">
+                    AI Engine API Key:
+                  </label>
+                  <span id="apiKeyStatusBadge" class="badge badge-orange" style="font-size: 10.5px;">Key Not Set</span>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <input type="password" id="inpApiKey" placeholder="Enter Gemini / AI API Key..." style="flex: 1; padding: 6px 10px; font-size: 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm);" oninput="onApiKeyInput()">
+                  <button type="button" class="btn btn-default btn-sm" id="btnToggleApiKey" onclick="toggleApiKeyVisibility()" title="Show or hide key">Show</button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="saveApiKey()">Save</button>
+                  <button type="button" class="btn btn-default btn-sm" onclick="clearApiKey()" title="Remove saved key">Clear</button>
+                </div>
+                <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 5px;">
+                  Saved locally in your browser. Used for live statutory analysis &amp; voice assistant.
+                </div>
+              </div>
 
               <div class="form-row">
                 <label for="txtUserQuery">Describe your legal problem:</label>
-                <textarea id="txtUserQuery" rows="4" placeholder="Example: Landlord is refusing to return my security deposit of Rs 85,000 even after vacating the flat on mutual notice..."></textarea>
+                <textarea id="txtUserQuery" rows="5" placeholder="Describe your legal issue or grievance in detail (e.g. Landlord withholding deposit, dishonoured cheque, defective goods, cyber fraud, property dispute)..."></textarea>
               </div>
 
-              <div style="margin-top: 10px;">
-                <button type="button" class="btn btn-primary" onclick="processLegalQuery()">Analyze Statutory Provisions</button>
+              <div style="margin-top: 12px; display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary" id="btnAnalyzeQuery" onclick="processLegalQuery()">Analyze Statutory Provisions</button>
                 <button type="button" class="btn btn-default" onclick="clearQueryInput()">Clear</button>
-              </div>
-
-              <div class="sample-links-bar">
-                <strong>Click to test standard citizen cases:</strong><br>
-                <a href="javascript:void(0)" onclick="loadCase('cheque')">[Cheque Bounce Sec 138]</a>
-                <a href="javascript:void(0)" onclick="loadCase('tenant')">[Tenancy Deposit Withholding]</a>
-                <a href="javascript:void(0)" onclick="loadCase('consumer')">[Defective Mobile Phone / Warranty]</a>
-                <a href="javascript:void(0)" onclick="loadCase('cyber')">[Cyber UPI Fraud]</a>
-                <a href="javascript:void(0)" onclick="loadCase('tax')">[Income Tax Demand Notice 143(1)]</a>
-                <a href="javascript:void(0)" onclick="loadCase('rti')">[RTI for Delayed Municipal Work]</a>
               </div>
             </div>
           </div>
@@ -204,6 +220,18 @@
               <span>Pleading Form Parameters</span>
             </div>
             <div class="panel-body">
+              <!-- DigiLocker e-KYC Autofill Banner -->
+              <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 9px 12px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <div style="font-size: 11px; color: #1e40af; line-height: 1.35;">
+                  <strong>DigiLocker e-KYC Integration:</strong><br>
+                  <span id="dlDrafterStatusText">Authenticate to auto-fill verified identity &amp; address.</span>
+                </div>
+                <button type="button" class="btn btn-digilocker-action" style="padding: 4px 10px; font-size: 11px;" onclick="autofillFromDigiLocker()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM10 17l-3.5-3.5 1.41-1.41L10 14.17 15.09 9.08l1.41 1.42L10 17z"/></svg>
+                  Auto-fill e-KYC
+                </button>
+              </div>
+
               <div class="form-row">
                 <label for="selectDocType">Select Pleading Type:</label>
                 <select id="selectDocType" onchange="renderPleading()">
@@ -341,73 +369,160 @@
       <div class="panel">
         <div class="panel-header">
           <span>National Judicial Data Grid (NJDG) — Case Status Search</span>
-          <span class="badge badge-green">eCourts Public API</span>
+          <span class="badge badge-green">eCourts Official Portal (v6)</span>
         </div>
         <div class="panel-body">
-          <div style="display: flex; gap: 10px; align-items: flex-end;">
-            <div style="flex: 1;">
+          <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 280px;">
               <label for="inpCNR">Enter 16-Character CNR (Case Natural Number):</label>
-              <input type="text" id="inpCNR" value="MHNG01-004521-2024" placeholder="Example: MHNG01-004521-2024">
+              <input type="text" id="inpCNR" value="" placeholder="e.g. MHNG010045212024 or MHAU019999992015" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter') startCnrSearch()">
             </div>
-            <button type="button" class="btn btn-primary" onclick="lookupCaseCNR()">Search Case</button>
+            <button type="button" class="btn btn-primary" id="btnStartCnrSearch" onclick="startCnrSearch()">Search eCourts</button>
+            <button type="button" class="btn btn-default" onclick="clearCnrSearch()">Clear</button>
           </div>
 
-          <div class="sample-links-bar" style="margin-top: 8px;">
-            <strong>Sample CNR numbers:</strong>
-            <a href="javascript:void(0)" onclick="fillCNR('MHNG01-004521-2024')">[Nagpur Civil Suit 142]</a>
-            <a href="javascript:void(0)" onclick="fillCNR('DLHC01-008912-2023')">[Delhi High Court Commercial Appeal]</a>
-            <a href="javascript:void(0)" onclick="fillCNR('MUPU02-001290-2024')">[Pune JMFC Cheque Dishonour]</a>
+          <!-- Sample CNR Links for Testing -->
+          <div class="sample-links-bar" style="margin-top: 10px;">
+            <strong>Sample CNR Formats:</strong>
+            <a href="javascript:void(0)" onclick="fillCNR('MHNG010045212024')">Nagpur Civil (MHNG01-004521-2024)</a>
+            <a href="javascript:void(0)" onclick="fillCNR('MHAU019999992015')">Aurangabad (MHAU01-999999-2015)</a>
+            <a href="javascript:void(0)" onclick="fillCNR('DLHC010089122023')">Delhi High Court (DLHC01-008912-2023)</a>
+          </div>
+
+          <!-- Status / Error Alert Banner -->
+          <div id="ecourtsStatusBanner" style="display: none;"></div>
+
+          <!-- Visitor CAPTCHA Solving Box (Human-in-the-loop) -->
+          <div class="ecourts-captcha-box" id="ecourtsCaptchaBox" style="display: none;">
+            <div class="ecourts-captcha-header">
+              <div class="ecourts-captcha-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                Visitor Security Verification (services.ecourts.gov.in)
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge badge-blue" style="font-size: 10px; font-weight: 700;">Exact Case (Case-Sensitive)</span>
+                <span class="badge badge-orange" style="font-size: 10px;">Human Verification</span>
+              </div>
+            </div>
+            <p style="font-size: 12px; color: #475569; margin-bottom: 10px;">
+              Please solve the security captcha directly from the official eCourts server to retrieve authenticated case proceedings:
+            </p>
+            <div class="ecourts-captcha-body">
+              <div class="captcha-img-wrapper" id="captchaImgWrapper" onclick="toggleCaptchaZoom()" title="Click to zoom in / zoom out">
+                <img id="ecourtsCaptchaImg" src="" alt="eCourts Captcha (Click to zoom)" />
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <button type="button" class="btn btn-default btn-sm" id="btnZoomCaptcha" onclick="toggleCaptchaZoom()" title="Enlarge captcha image">
+                  🔍 Zoom In
+                </button>
+                <button type="button" class="btn btn-default btn-sm" id="btnRefreshCaptcha" onclick="refreshEcourtCaptcha()" title="Fetch a new captcha image">
+                  🔄 Refresh Image
+                </button>
+              </div>
+              <div class="captcha-input-group">
+                <input type="text" id="inpCaptchaCode" placeholder="Type exact captcha" maxlength="10" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter') submitEcourtCaptcha()">
+                <button type="button" class="btn btn-success" id="btnSubmitCaptcha" onclick="submitEcourtCaptcha()">
+                  Submit &amp; Fetch Case
+                </button>
+                <button type="button" class="btn btn-default" onclick="cancelEcourtCaptcha()">
+                  Cancel
+                </button>
+                <div class="captcha-hint">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="#0284c7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                  <span><strong>Important:</strong> Captcha is <strong>case-sensitive</strong>. Click image or "Zoom In" to distinguish tricky letters/numbers (e.g. <code>8</code> vs <code>B</code>, <code>u</code> vs <code>v</code>).</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Searches Section (with Snapshots) -->
+          <div class="ecourts-recent-container" id="ecourtsRecentContainer" style="display: none;">
+            <div class="ecourts-recent-header">
+              <span><strong>Recent Searches &amp; Saved Snapshots</strong> (Click to view saved record)</span>
+              <button type="button" class="btn btn-default btn-sm" onclick="clearRecentSearches()" style="font-size: 10px; padding: 2px 6px;">Clear History</button>
+            </div>
+            <div class="ecourts-recent-chips" id="ecourtsRecentChips">
+              <!-- Dynamically populated from localStorage -->
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="two-col-layout">
+      <!-- Saved Snapshot Out-of-date Notice Banner -->
+      <div class="snapshot-banner" id="ecourtsSnapshotBanner" style="display: none;">
+        <div class="snapshot-banner-text">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#b45309"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          <span id="snapshotBannerLabel">Saved snapshot record, may be out of date.</span>
+        </div>
+        <div class="snapshot-banner-actions">
+          <button type="button" class="btn btn-primary btn-sm" id="btnRefreshSnapshot" onclick="refreshCurrentSnapshot()">
+            🔄 Refresh from eCourts
+          </button>
+          <a href="https://services.ecourts.gov.in/ecourtindia_v6/" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-sm">
+            🌐 Open official page
+          </a>
+        </div>
+      </div>
+
+      <!-- Empty State View (Before any search) -->
+      <div class="ecourts-empty-state" id="ecourtsEmptyState">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="#003366"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        <h3 style="color: #0f172a; margin-bottom: 6px; font-size: 15px;">Official eCourts Case Lookup</h3>
+        <p style="font-size: 12.5px; max-width: 500px; margin: 0 auto; line-height: 1.5;">
+          Enter any 16-character Case Natural Number (CNR) above to query the National Judicial Data Grid. You will be prompted to solve the official security captcha directly from the court portal.
+        </p>
+      </div>
+
+      <!-- Real Case Search Results (Two-Column Layout) -->
+      <div class="two-col-layout" id="ecourtsResultsContainer" style="display: none;">
         <div class="col-half">
           <div class="panel">
             <div class="panel-header">
-              <span id="caseTitleDisplay">Regular Civil Suit No. 142/2024</span>
+              <span id="caseTitleDisplay">Case Details</span>
               <span class="badge badge-orange" id="caseStatusBadge">Pending</span>
             </div>
             <div class="panel-body">
               <table class="gov-table">
                 <tbody>
                   <tr>
-                    <td style="width: 35%; font-weight: bold;">Court Name:</td>
-                    <td id="courtNameDisplay">District &amp; Sessions Court, Nagpur</td>
+                    <td style="width: 35%; font-weight: bold;">Court &amp; Presiding Judge:</td>
+                    <td id="courtAndJudgeDisplay">—</td>
                   </tr>
                   <tr>
-                    <td style="font-weight: bold;">Filing Date:</td>
-                    <td id="filingDateDisplay">14-02-2024</td>
+                    <td style="font-weight: bold;">Case Type:</td>
+                    <td id="caseTypeDisplay">—</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Filing Details:</td>
+                    <td id="filingDetailsDisplay">—</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Registration Details:</td>
+                    <td id="registrationDetailsDisplay">—</td>
                   </tr>
                   <tr>
                     <td style="font-weight: bold;">Petitioner:</td>
-                    <td id="petitionerDisplay">Devendra S. Agrawal</td>
+                    <td id="petitionerDisplay">—</td>
                   </tr>
                   <tr>
                     <td style="font-weight: bold;">Respondent:</td>
-                    <td id="respondentDisplay">Vidarbha Trading Corporation</td>
+                    <td id="respondentDisplay">—</td>
                   </tr>
                   <tr>
-                    <td style="font-weight: bold;">Statutory Acts:</td>
-                    <td id="actsDisplay">Code of Civil Procedure, Order 39 Rule 1 &amp; 2</td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight: bold;">Presiding Judge:</td>
-                    <td id="judgeDisplay">Shri R. K. Deshmukh, Civil Judge Senior Division</td>
+                    <td style="font-weight: bold;">Procedural Stage:</td>
+                    <td id="stageDisplay">—</td>
                   </tr>
                   <tr style="background-color: #fff8e1;">
                     <td style="font-weight: bold; color: #b71c1c;">Next Hearing Date:</td>
-                    <td id="nextHearingDisplay" style="font-weight: bold; color: #b71c1c;">28-09-2026 (Court Hall No. 4)</td>
+                    <td id="nextHearingDisplay" style="font-weight: bold; color: #b71c1c;">—</td>
                   </tr>
                 </tbody>
               </table>
 
-              <fieldset style="margin-top: 10px;">
-                <legend>Latest Interim Judicial Order Sheet</legend>
-                <div id="orderSheetDisplay" style="font-size: 11px; font-family: monospace; color: #333;">
-                  "12-08-2026: Counsel for Petitioner present. Interim order extended. Stand over to 28-09-2026 for final arguments on temporary injunction application."
-                </div>
-              </fieldset>
+              <div style="margin-top: 12px; font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span>CNR: <strong id="cnrNumberDisplay">—</strong> | Source: eCourts Services (eCommittee, Supreme Court of India)</span>
+              </div>
             </div>
           </div>
         </div>
@@ -416,21 +531,27 @@
           <div class="panel">
             <div class="panel-header">
               <span>Court Proceedings Diary (Chronological Order)</span>
-              <span class="badge badge-blue">Verified NJDG Record</span>
+              <span class="badge badge-blue">Official eCourts Record</span>
             </div>
             <div class="panel-body">
-              <table class="gov-table" id="tableCaseHistory">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Procedural Stage</th>
-                    <th>Court Proceedings</th>
-                  </tr>
-                </thead>
-                <tbody id="historyTableBody">
-                  <!-- Populated by JS -->
-                </tbody>
-              </table>
+              <!-- Horizontally scrollable on small screens -->
+              <div class="table-scroll-wrapper">
+                <table class="gov-table" id="tableCaseHistory">
+                  <thead>
+                    <tr>
+                      <th style="min-width: 100px;">Hearing Date</th>
+                      <th style="min-width: 140px;">Purpose of Hearing</th>
+                      <th style="min-width: 180px;">Business on Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historyTableBody">
+                    <!-- Populated dynamically by JS -->
+                  </tbody>
+                </table>
+              </div>
+              <div id="noHistoryNotice" style="display: none; padding: 20px; text-align: center; color: #64748b; font-size: 12px;">
+                No historical hearing proceedings recorded on eCourts for this matter.
+              </div>
             </div>
           </div>
         </div>
@@ -450,6 +571,17 @@
               <span class="badge badge-green">Public Records</span>
             </div>
             <div class="panel-body">
+              <!-- DigiLocker Land Records Sync -->
+              <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                <div style="font-size: 11px; color: #166534; line-height: 1.35;">
+                  <strong>DigiLocker Land Vault:</strong> Fetch verified 7/12 extract &amp; title record
+                </div>
+                <button type="button" class="btn btn-digilocker-fetch" onclick="importLandRecordFromDigiLocker()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM10 17l-3.5-3.5 1.41-1.41L10 14.17 15.09 9.08l1.41 1.42L10 17z"/></svg>
+                  Fetch 7/12
+                </button>
+              </div>
+
               <div class="form-row">
                 <label for="selLandState">Select State Portal:</label>
                 <select id="selLandState" onchange="onStateChange()">
@@ -655,10 +787,10 @@
             </div>
             <button type="button" class="btn btn-primary" onclick="joinRoomByCode()">Join Case Room</button>
           </div>
-          <div class="sample-links-bar" style="margin-top: 8px;">
-            <strong>Quick-test available codes to enter/join:</strong>
-            <a href="javascript:void(0)" onclick="quickJoinCode('NYAYA-701-K9')">[Enter Room: NYAYA-701-K9 (Dev Jain vs Patanjali)]</a>
-            <a href="javascript:void(0)" onclick="quickJoinCode('NYAYA-702-T8')">[Join Room: NYAYA-702-T8 (Tata vs Birla Matter)]</a>
+          <div class="sample-links-bar">
+            <strong>Pre-Authorized Chamber Tokens:</strong>
+            <a href="javascript:void(0)" onclick="quickJoinCode('NYAYA-701-K9')">Room NYAYA-701-K9 (Patanjali Dispute)</a>
+            <a href="javascript:void(0)" onclick="quickJoinCode('NYAYA-702-T8')">Room NYAYA-702-T8 (Arbitration Matter)</a>
           </div>
         </fieldset>
 
@@ -1083,6 +1215,484 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <!-- ==================================================================
+       DIGILOCKER AUTHENTICATION MODAL (MeriPehchaan National SSO / NeGD)
+       ================================================================== -->
+  <div class="digilocker-modal-overlay" id="modalDigiLockerLogin" style="display: none;" onclick="handleModalOverlayClick(event, 'modalDigiLockerLogin')">
+    <div class="digilocker-modal" onclick="event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="dl-modal-header">
+        <div class="dl-modal-header-left">
+          <!-- DigiLocker Cloud & Keyhole Logo -->
+          <svg viewBox="0 0 48 48" fill="none" width="34" height="34">
+            <rect width="48" height="48" rx="8" fill="#003366"/>
+            <path d="M36 24c0-5.52-4.48-10-10-10-4.42 0-8.17 2.86-9.5 6.84C13.4 21.46 11 24.45 11 28c0 4.42 3.58 8 8 8h17c3.87 0 7-3.13 7-7 0-3.32-2.31-6.1-5.43-6.83-.37-.09-.57-.17-.57-.17z" fill="#0099FF"/>
+            <path d="M24 22c-2.21 0-4 1.79-4 4 0 1.54.87 2.88 2.16 3.56V32c0 .55.45 1 1 1h1.68c.55 0 1-.45 1-1v-2.44C27.13 28.88 28 27.54 28 26c0-2.21-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" fill="#FFFFFF"/>
+          </svg>
+          <div class="dl-modal-header-text">
+            <h3>DigiLocker — National Digital Identity</h3>
+            <p>National e-Governance Division (NeGD) • Ministry of Electronics &amp; IT (MeitY)</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeDigiLockerModal()" title="Close">&times;</button>
+      </div>
+
+      <!-- Gateway Mode Switcher: 2 Tabs (Live DigiLocker Redirect vs Team Litigant Login) -->
+      <div class="dl-mode-tabs">
+        <button type="button" class="dl-mode-tab active" id="btnModeLiveOAuth" onclick="switchDlGatewayMode('live')">
+          🚀 Official DigiLocker Redirect (Live OAuth)
+        </button>
+        <button type="button" class="dl-mode-tab" id="btnModeSandbox" onclick="switchDlGatewayMode('sandbox')">
+          👥 Verified Litigant Login (Mansvi, Swati, Bhoomi)
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="dl-modal-body">
+        
+        <!-- ==============================================================
+             TAB 1 (LEFT): REAL LIVE DIGILOCKER OAUTH 2.0 REDIRECT FLOW
+             ============================================================== -->
+        <div id="dlModeLiveView">
+          <div class="dl-live-box">
+            <h4>Official DigiLocker / MeriPehchaan Authentication Gateway</h4>
+            <p>
+              Clicking below initiates a standard <strong>OAuth 2.0 Authorization Code</strong> flow. Your browser will be redirected directly to the official Government of India DigiLocker authorization endpoint.
+            </p>
+
+            <div class="dl-param-grid">
+              <span class="dl-param-label">Auth Endpoint:</span>
+              <span class="dl-param-value" id="lblLiveEndpoint">https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize</span>
+
+              <span class="dl-param-label">Client ID:</span>
+              <span class="dl-param-value" id="lblLiveClientId" style="font-weight: bold; color: #003366;">Loading server config...</span>
+
+              <span class="dl-param-label">Redirect URI:</span>
+              <span class="dl-param-value" id="lblLiveRedirectUri">http://localhost:3000/callback.html</span>
+
+              <span class="dl-param-label">Grant Type:</span>
+              <span class="dl-param-value">authorization_code (OpenID Connect / OIDC)</span>
+
+              <span class="dl-param-label">Requested Scope:</span>
+              <span class="dl-param-value">openid profile in.gov.uidai:eaadhaar</span>
+            </div>
+
+            <div style="margin: 20px 0 10px 0;">
+              <button type="button" class="btn-launch-live-dl" onclick="launchRealDigiLockerOAuth()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" fill="#38BDF8"/><path d="M12 11c-1.66 0-3 1.34-3 3 0 1.3.84 2.4 2 2.82V18c0 .55.45 1 1 1s1-.45 1-1v-1.18c1.16-.42 2-1.52 2-2.82 0-1.66-1.34-3-3-3z" fill="#FFFFFF"/></svg>
+                <span>Launch Official DigiLocker OAuth Login &rarr;</span>
+              </button>
+            </div>
+
+            <div id="dlLiveNoticeBox" style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-top: 14px; text-align: left; font-size: 11.5px; color: #92400e; line-height: 1.45;">
+              <strong>⚠️ NeGD Government Partner Client ID Notice:</strong><br>
+              DigiLocker is an official Government of India identity service. To prevent unauthorized data access, DigiLocker's real OAuth server rejects authorization requests if the <code>client_id</code> is not pre-registered and approved by the <strong>National e-Governance Division (NeGD) / API Setu</strong>.<br><br>
+              • If your university application is in review, click <strong>"Academic Registration Guide"</strong> below for the step-by-step institutional process.<br>
+              • To test full legal drafting, pleading verification, and case rooms, use the <strong>"👥 Verified Litigant Login"</strong> tab.
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: center; align-items: center; margin-top: 14px;">
+            <button type="button" class="btn btn-default" onclick="openPartnerRegistrationGuide()">
+              📋 Academic Institution Registration Guide
+            </button>
+          </div>
+        </div>
+
+        <!-- ==============================================================
+             TAB 2 (RIGHT): 3 VERIFIED TEAM LITIGANT LOGINS (Mansvi, Swati, Bhoomi)
+             ============================================================== -->
+        <div id="dlModeSandboxView" style="display: none;">
+          <!-- Step Progress Bar -->
+          <div class="dl-modal-steps" style="margin: -10px -20px 16px -20px;">
+            <div class="dl-step-item active" id="dlStepIndicator1">
+              <span class="dl-step-circle">1</span>
+              <span>1. Litigant Profile</span>
+            </div>
+            <div class="dl-step-item" id="dlStepIndicator2">
+              <span class="dl-step-circle">2</span>
+              <span>2. OTP &amp; Consent</span>
+            </div>
+            <div class="dl-step-item" id="dlStepIndicator3">
+              <span class="dl-step-circle">3</span>
+              <span>3. Verified e-KYC</span>
+            </div>
+          </div>
+
+          <!-- STEP 1: SELECT 1 OF 3 VERIFIED TEAM MEMBERS -->
+          <div id="dlStep1View">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 13px; font-weight: 700; color: #003366; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <span>Select Verified Litigant to Sign In:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 12px;">✓ 3 Profiles Ready</span>
+              </div>
+
+              <!-- 3 Team Profiles Grid -->
+              <div class="dl-team-profiles-grid">
+                <!-- 1. Mansvi Khupse -->
+                <div class="dl-team-card active" id="cardMember_mansvi" onclick="selectTeamMember('mansvi')">
+                  <div class="dl-team-card-header">
+                    <div class="dl-team-avatar" style="background: #2563eb;">MK</div>
+                    <div class="dl-team-info">
+                      <div class="dl-team-name">Mansvi Khupse</div>
+                      <div class="dl-team-sub">Citizen Litigant</div>
+                    </div>
+                  </div>
+                  <div class="dl-team-details">
+                    <div>UID: <strong>XXXX-XXXX-9182</strong></div>
+                    <div>Phone: <strong>+91 94221 88990</strong></div>
+                  </div>
+                  <div class="dl-team-tag tag-land">📂 Land &amp; Property</div>
+                </div>
+
+                <!-- 2. Swati Kundu -->
+                <div class="dl-team-card" id="cardMember_swati" onclick="selectTeamMember('swati')">
+                  <div class="dl-team-card-header">
+                    <div class="dl-team-avatar" style="background: #0d9488;">SK</div>
+                    <div class="dl-team-info">
+                      <div class="dl-team-name">Swati Kundu</div>
+                      <div class="dl-team-sub">Citizen Litigant</div>
+                    </div>
+                  </div>
+                  <div class="dl-team-details">
+                    <div>UID: <strong>XXXX-XXXX-7721</strong></div>
+                    <div>Phone: <strong>+91 98230 11223</strong></div>
+                  </div>
+                  <div class="dl-team-tag tag-cheque">⚖️ Sec 138 Cheque</div>
+                </div>
+
+                <!-- 3. Chinta Bhumika Reddy (Bhoomi) -->
+                <div class="dl-team-card" id="cardMember_bhoomi" onclick="selectTeamMember('bhoomi')">
+                  <div class="dl-team-card-header">
+                    <div class="dl-team-avatar" style="background: #7c3aed;">BR</div>
+                    <div class="dl-team-info">
+                      <div class="dl-team-name">Bhoomi (Bhumika)</div>
+                      <div class="dl-team-sub">Citizen Litigant</div>
+                    </div>
+                  </div>
+                  <div class="dl-team-details">
+                    <div>UID: <strong>XXXX-XXXX-4529</strong></div>
+                    <div>Phone: <strong>+91 99887 65432</strong></div>
+                  </div>
+                  <div class="dl-team-tag tag-tenancy">📜 Tenancy / Lease</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label id="lblDlIdentifier">Aadhaar Number or Registered Mobile Number:</label>
+              <input type="text" id="inpDlIdentifier" value="9422188990" readonly style="background: #f8fafc; font-weight: 600; color: #0f172a;">
+            </div>
+
+            <div class="form-row">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label for="inpDlPin" style="margin-bottom: 0;">6-Digit Security PIN:</label>
+                <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Auto-authenticated (PIN: 123456)</span>
+              </div>
+              <input type="password" id="inpDlPin" maxlength="6" value="123456" style="letter-spacing: 4px; font-weight: bold; background: #f8fafc;" readonly>
+            </div>
+
+            <div class="dl-consent-box" style="margin-top: 12px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#16a34a" style="flex-shrink: 0;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v6h-2V7zm1 10.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
+              <div>
+                <strong>Section 4, Aadhaar Act 2016 &amp; DPDP Act 2023:</strong><br>
+                Digital e-KYC consent pre-cleared for <strong id="lblSelectedLitigantConsent">Mansvi Khupse</strong>. No raw biometrics stored.
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+              <button type="button" class="btn btn-default" onclick="closeDigiLockerModal()">Cancel</button>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary" onclick="instantTeamLogin()" style="background-color: #16a34a; border-color: #16a34a; padding: 8px 16px;">
+                  ⚡ 1-Click Fast Login
+                </button>
+                <button type="button" class="btn btn-primary" onclick="sendDigiLockerOtp()" style="background-color: #003366; border-color: #003366; padding: 8px 16px;">
+                  Simulate OTP &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: OTP & DPDP ACT 2023 CONSENT -->
+          <div id="dlStep2View" style="display: none;">
+            <div style="text-align: center; margin-bottom: 14px;">
+              <div style="width: 44px; height: 44px; background: #e0f2fe; color: #0284c7; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 6px;">
+                📲
+              </div>
+              <h4 style="font-size: 15px; margin: 0; color: #0f172a;">Enter 6-Digit DigiLocker OTP</h4>
+              <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                One-Time Password sent to Aadhaar-registered mobile <strong id="lblDlMaskedPhone">+91 ******4819</strong>
+              </p>
+            </div>
+
+            <div class="dl-otp-group">
+              <input type="text" class="dl-otp-digit" id="otp_0" maxlength="1" oninput="handleOtpInput(0, event)" onkeydown="handleOtpKey(0, event)">
+              <input type="text" class="dl-otp-digit" id="otp_1" maxlength="1" oninput="handleOtpInput(1, event)" onkeydown="handleOtpKey(1, event)">
+              <input type="text" class="dl-otp-digit" id="otp_2" maxlength="1" oninput="handleOtpInput(2, event)" onkeydown="handleOtpKey(2, event)">
+              <input type="text" class="dl-otp-digit" id="otp_3" maxlength="1" oninput="handleOtpInput(3, event)" onkeydown="handleOtpKey(3, event)">
+              <input type="text" class="dl-otp-digit" id="otp_4" maxlength="1" oninput="handleOtpInput(4, event)" onkeydown="handleOtpKey(4, event)">
+              <input type="text" class="dl-otp-digit" id="otp_5" maxlength="1" oninput="handleOtpInput(5, event)" onkeydown="handleOtpKey(5, event)">
+            </div>
+
+            <div style="text-align: center; margin-bottom: 14px;">
+              <button type="button" class="btn btn-default btn-sm" onclick="autoFillOtpDemo()" style="color: #0369a1; border-color: #bae6fd; background: #f0f9ff;">
+                ⚡ Auto-Fill Demo OTP (120645)
+              </button>
+              <span style="font-size: 11px; color: #94a3b8; margin-left: 10px;">Resend OTP in <span id="otpTimerDisplay">58</span>s</span>
+            </div>
+
+            <div class="dl-consent-box">
+              <input type="checkbox" id="chkDlDpdpConsent" checked>
+              <div>
+                <strong>Statutory Consent under DPDP Act, 2023 &amp; Aadhaar Act, 2016:</strong><br>
+                I hereby authorize NyayaSetu to verify my identity via DigiLocker e-KYC and access my issued legal documents (Aadhaar, PAN, Land Records, Bar Council Certificate) solely for legal literacy, statutory pleading drafting, and case tracking.
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; display: flex; gap: 10px; justify-content: space-between;">
+              <button type="button" class="btn btn-default" onclick="backToDlStep1()">&larr; Back</button>
+              <button type="button" class="btn btn-success" onclick="verifyDigiLockerOtp()" style="padding: 8px 20px;">
+                Verify &amp; Authorize (प्रमाणित करें)
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: VERIFICATION SUCCESS & PROFILE READY -->
+          <div id="dlStep3View" style="display: none;">
+            <div style="text-align: center; margin-bottom: 12px;">
+              <div style="width: 50px; height: 50px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 6px; box-shadow: 0 0 0 4px #bbf7d0;">
+                ✓
+              </div>
+              <h4 style="font-size: 16px; margin: 0; color: #15803d;">DigiLocker e-KYC Verified Successfully</h4>
+              <p style="font-size: 11.5px; color: #64748b; margin: 3px 0 0 0;">
+                Digitally certified by Controller of Certifying Authorities (CCA) • Govt of India
+              </p>
+            </div>
+
+            <div class="dl-verified-card">
+              <div class="dl-card-identity-header">
+                <div class="dl-card-avatar" id="dlVerifiedAvatar">DJ</div>
+                <div>
+                  <h4 id="dlVerifiedName">Dev Jain</h4>
+                  <div class="dl-card-subtitle" id="dlVerifiedRoleTag">Citizen Litigant • e-KYC Verified</div>
+                </div>
+              </div>
+
+              <div class="dl-card-details-grid">
+                <div class="dl-card-item">
+                  <span>Identity / Masked Token:</span>
+                  <strong id="dlVerifiedUid">XXXX-XXXX-4819</strong>
+                </div>
+                <div class="dl-card-item">
+                  <span>DigiLocker ID:</span>
+                  <strong id="dlVerifiedUri">DL-DEV-1206-IN</strong>
+                </div>
+                <div class="dl-card-item">
+                  <span>Registered Mobile:</span>
+                  <strong id="dlVerifiedMobile">+91 98765 43210</strong>
+                </div>
+                <div class="dl-card-item">
+                  <span>Territorial Jurisdiction:</span>
+                  <strong id="dlVerifiedAddress">Nagpur, Maharashtra</strong>
+                </div>
+                <div class="dl-card-item" style="grid-column: span 2;">
+                  <span>DPDP Audit Consent Reference:</span>
+                  <strong id="dlVerifiedConsentRef" style="font-family: monospace; font-size: 11px;">DPDP-CONSENT-99412-2026</strong>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 11.5px; margin-bottom: 14px;">
+              <div style="font-weight: 700; color: #003366; margin-bottom: 4px;">📂 5 Verified Documents Synchronized to NyayaSetu:</div>
+              <div style="color: #64748b;">
+                • Aadhaar e-KYC Credential (UIDAI)<br>
+                • Permanent Account Number (Income Tax Dept)<br>
+                • Mahabhumi 7/12 Land Rights Extract (Revenue Dept)<br>
+                • Cheque Dishonour Memo &amp; Bank Slip (HDFC Bank)<br>
+                • Driving Licence (MoRTH)
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+              <button type="button" class="btn btn-default" onclick="openDigiLockerVault()">View Documents Vault</button>
+              <button type="button" class="btn btn-primary" onclick="closeDigiLockerModal()" style="background-color: #003366; border-color: #003366; padding: 8px 18px;">
+                Enter NyayaSetu Portal &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       ACADEMIC INSTITUTION REGISTRATION GUIDE MODAL (partners.apisetu.gov.in)
+       ================================================================== -->
+  <div class="digilocker-modal-overlay" id="modalPartnerRegistrationGuide" style="display: none;" onclick="handleModalOverlayClick(event, 'modalPartnerRegistrationGuide')">
+    <div class="digilocker-modal" style="max-width: 720px;" onclick="event.stopPropagation()">
+      <div class="dl-modal-header" style="background: linear-gradient(135deg, #001f3f 0%, #003366 100%);">
+        <div class="dl-modal-header-left">
+          <svg viewBox="0 0 24 24" fill="#0099FF" width="30" height="30">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <div class="dl-modal-header-text">
+            <h3>DigiLocker Partner Portal Registration Guide</h3>
+            <p>Official Onboarding for Ramdeobaba University (RBU) / IDEA Lab NyayaSetu</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closePartnerRegistrationGuide()">&times;</button>
+      </div>
+
+      <div class="dl-modal-body" style="font-size: 12.5px; line-height: 1.6;">
+        <p style="color: #334155; margin-bottom: 14px;">
+          To enable live <strong>DigiLocker OAuth 2.0 Login</strong> without receiving <em>"Invalid Client"</em> from government servers, your university/department must register as a certified <strong>Requester Organization</strong> on the official government partner portal.
+        </p>
+
+        <div class="dl-guide-step-card">
+          <strong>Step 1: Access the Official Partner Portal</strong>
+          Navigate to the official Government of India API Setu partner registration gateway:<br>
+          👉 <a href="https://partners.apisetu.gov.in" target="_blank" style="font-weight: 700; color: #0052cc;">https://partners.apisetu.gov.in</a> (or <a href="https://partners.digitallocker.gov.in" target="_blank" style="font-weight: 700; color: #0052cc;">partners.digitallocker.gov.in</a>).
+        </div>
+
+        <div class="dl-guide-step-card">
+          <strong>Step 2: Sign In with Institutional Authorized Signatory</strong>
+          The registration must be initiated using the personal DigiLocker account of an authorized university authority (e.g., Registrar, Dean R&amp;D, Head of CSE Department, or Director of IDEA Lab) using their Aadhaar-linked mobile.
+        </div>
+
+        <div class="dl-guide-step-card">
+          <strong>Step 3: Register as a "Requester Organization"</strong>
+          Under registration category, select <strong>Requester Organization</strong> (not <em>Issuer</em>). Provide:<br>
+          • <strong>Organization Name:</strong> Shri Ramdeobaba College of Engineering and Management / Ramdeobaba University, Nagpur<br>
+          • <strong>Department:</strong> Department of Computer Science &amp; Engineering / IDEA Lab<br>
+          • <strong>Official Email:</strong> Institutional email domain (e.g. <code>@rknec.edu</code> or <code>@rbunagpur.in</code>)<br>
+          • <strong>Use Case Description:</strong> Citizen legal literacy, e-KYC verified statutory pleading drafting, and privileged lawyer-client case document exchange under Advocates Act 1961.
+        </div>
+
+        <div class="dl-guide-step-card">
+          <strong>Step 4: Verification Call &amp; Digital Agreement Signing</strong>
+          The NeGD / DigiLocker Partner Evaluation Committee reviews academic applications. An authorized representative will participate in a brief verification call and electronically sign the standardized <em>Terms of Use / Non-Disclosure Agreement (NDA)</em>.
+        </div>
+
+        <div class="dl-guide-step-card">
+          <strong>Step 5: Obtain API Credentials &amp; Whitelist Redirect URI</strong>
+          Once approved, the API Setu dashboard provides:<br>
+          • <code>x-client-id</code> (App Client ID)<br>
+          • <code>x-client-secret</code> (Confidential Secret)<br>
+          • In the portal's App Settings, register the Callback URL: <code>http://localhost:3000/callback.html</code> (or your deployed server domain).
+        </div>
+
+        <div class="dl-guide-step-card" style="border-left-color: #16a34a; background: #f0fdf4;">
+          <strong style="color: #166534;">Step 6: Enter Keys into NyayaSetu</strong>
+          Paste your <strong>Client ID</strong> and <strong>Client Secret</strong> into the <strong>"⚙️ API Keys &amp; Partner Setup"</strong> tab in NyayaSetu. Live real DigiLocker login will immediately activate!
+        </div>
+
+        <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+          <button type="button" class="btn btn-primary" onclick="closePartnerRegistrationGuide()" style="background-color: #003366; border-color: #003366;">
+            I Understand &amp; Close Guide
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>KYC Credential (UIDAI)<br>
+              • Permanent Account Number (Income Tax Dept)<br>
+              • Mahabhumi 7/12 Land Rights Extract (Revenue Dept)<br>
+              • Cheque Dishonour Memo &amp; Bank Slip (HDFC Bank)<br>
+              • Driving Licence (MoRTH)
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" class="btn btn-default" onclick="openDigiLockerVault()">View Documents Vault</button>
+            <button type="button" class="btn btn-primary" onclick="closeDigiLockerModal()" style="background-color: #003366; border-color: #003366; padding: 8px 18px;">
+              Enter NyayaSetu Portal &rarr;
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       DIGILOCKER DOCUMENTS VAULT MODAL
+       ================================================================== -->
+  <div class="digilocker-modal-overlay" id="modalDigiLockerVault" style="display: none;" onclick="handleModalOverlayClick(event, 'modalDigiLockerVault')">
+    <div class="digilocker-modal" style="max-width: 680px;" onclick="event.stopPropagation()">
+      <div class="dl-modal-header">
+        <div class="dl-modal-header-left">
+          <svg viewBox="0 0 24 24" fill="#0099FF" width="28" height="28">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+          </svg>
+          <div class="dl-modal-header-text">
+            <h3>DigiLocker Digital Documents Vault</h3>
+            <p id="dlVaultOwnerSubtitle">Official Repository of Digitally Signed Legal Records</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeDigiLockerVault()" title="Close">&times;</button>
+      </div>
+
+      <div class="dl-modal-body">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <span class="badge badge-green">CCA Certified</span>
+            <span class="badge badge-blue">Section 35A IT Act, 2000</span>
+          </div>
+          <span style="font-size: 11px; color: #64748b;" id="dlVaultDocCount">5 Issued Documents</span>
+        </div>
+
+        <div id="dlVaultUploadNotice" style="display: none; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 11.5px; color: #92400e;">
+          📌 Select a document below to attach it directly as verified legal evidence in Case Room <strong id="dlTargetRoomBadge">#NYAYA-701</strong>.
+        </div>
+
+        <div class="dl-vault-grid" id="dlVaultListContainer">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
+          <button type="button" class="btn btn-default" onclick="closeDigiLockerVault()">Close Vault</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       DIGILOCKER OFFICIAL DOCUMENT PREVIEW MODAL
+       ================================================================== -->
+  <div class="digilocker-modal-overlay" id="modalDocPreview" style="display: none;" onclick="handleModalOverlayClick(event, 'modalDocPreview')">
+    <div class="digilocker-modal" style="max-width: 600px;" onclick="event.stopPropagation()">
+      <div class="dl-modal-header" style="background: #0f172a;">
+        <div class="dl-modal-header-left">
+          <div class="dl-modal-header-text">
+            <h3 id="docPreviewTitle">Document Preview</h3>
+            <p id="docPreviewSubtitle">Govt of India Digitally Signed Document</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeDocPreview()">&times;</button>
+      </div>
+      <div class="dl-modal-body" id="docPreviewBody">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       SIMULATED MOBILE SMS TOAST NOTIFICATION
+       ================================================================== -->
+  <div class="dl-sms-toast" id="digilockerSmsToast" style="display: none;">
+    <div class="dl-sms-toast-header">
+      <strong>💬 SMS • AX-DGLOKR</strong>
+      <span>Just Now</span>
+    </div>
+    <div class="dl-sms-toast-body" id="smsToastBody">
+      Your OTP for NyayaSetu portal authentication is <strong>120645</strong>. Valid for 10 minutes. Do not share this with anyone. (Govt of India NeGD)
+    </div>
+    <div class="dl-sms-toast-actions">
+      <button type="button" class="btn-toast-dismiss" onclick="dismissSmsToast()">Dismiss</button>
+      <button type="button" class="btn-toast-autofill" onclick="autoFillOtpFromToast()">⚡ Auto-Fill OTP</button>
+    </div>
+  </div>
+
+  <script src="app.js?v=4"></script>
 </body>
 </html>
