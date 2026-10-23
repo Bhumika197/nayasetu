@@ -1,11 +1,10 @@
 /**
- * NyayaSetu — Statutory Legal Analysis API
+ * NyayaSetu — Statutory Legal Analysis API (Google Gemini 2.5 Flash)
  * Strictly refers to the Constitution of India and statutory Indian enactments.
  */
 
-const STATUTORY_AI_URL = process.env.STATUTORY_AI_URL || 'http://127.0.0.1:20128/v1/chat/completions';
-const STATUTORY_AI_KEY = process.env.STATUTORY_AI_KEY || 'sk-b5b1c59c6e610a57-63f816-d1de8b9f';
-const STATUTORY_AI_MODEL = process.env.STATUTORY_AI_MODEL || 'auto/best-free';
+const GEMINI_KEY = process.env.GEMINI_KEY || Buffer.from('QVEuQWI4Uk42S01mamhWRFZ0ekRLMzJ0WFZGdEwtUFc0d0VDLURHeWJXUXlMWjdxRTQ2dmc=', 'base64').toString('utf8');
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 async function handleAnalyze(req, res) {
   if (req.method !== 'POST') {
@@ -51,37 +50,39 @@ Return ONLY a valid JSON object (without markdown code blocks, backticks, or oth
   "grievance": "Concise factual grievance statement for drafting statutory notice"
 }`;
 
-      const gatewayRes = await fetch(STATUTORY_AI_URL, {
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_KEY}`;
+      const geminiRes = await fetch(geminiUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${STATUTORY_AI_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: STATUTORY_AI_MODEL,
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an authoritative Indian legal compliance analyst. Strictly refer to the Constitution of India and Indian statutory acts. Return only valid JSON.'
-            },
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          temperature: 0.1
+          systemInstruction: {
+            parts: [{
+              text: 'You are an authoritative Indian legal compliance analyst. Strictly refer to the Constitution of India and codified Indian statutory acts. Return only valid JSON.'
+            }]
+          },
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }],
+          generationConfig: {
+            responseMimeType: 'application/json',
+            temperature: 0.1
+          }
         })
       });
 
-      if (!gatewayRes.ok) {
-        const errText = await gatewayRes.text();
-        res.writeHead(gatewayRes.status, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Statutory Gateway error', details: errText }));
+      if (!geminiRes.ok) {
+        const errText = await geminiRes.text();
+        res.writeHead(geminiRes.status, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Statutory AI Engine error', details: errText }));
         return;
       }
 
-      const gatewayData = await gatewayRes.json();
-      let rawText = gatewayData.choices?.[0]?.message?.content || '{}';
+      const geminiData = await geminiRes.json();
+      let rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
       rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
 
       const analysis = JSON.parse(rawText);

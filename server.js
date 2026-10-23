@@ -9,6 +9,23 @@ const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
 
+// Load environment variables from .env if present
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split(/\r?\n/).forEach(line => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const idx = trimmed.indexOf('=');
+      if (idx !== -1) {
+        const k = trimmed.substring(0, idx).trim();
+        const v = trimmed.substring(idx + 1).trim();
+        if (!process.env[k]) process.env[k] = v;
+      }
+    }
+  });
+}
+
 // Import shared DigiLocker API handlers
 const handleConfig = require('./api/digilocker/config');
 const handleAuthorizeUrl = require('./api/digilocker/authorize-url');
