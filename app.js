@@ -71,7 +71,7 @@ function showTab(tabName) {
   const titles = {
     'assistant': 'Statutory Grievance & Legal Guidance Portal',
     'autodraft': 'Court-Ready Document Drafter',
-    'voicebot': 'Bhashini Multilingual Voice Assistant',
+    'voicebot': 'Swayam Indic Voice Assistant',
     'ecourts': 'eCourts Live Case Status Tracker',
     'bhulekh': 'Bhulekh & Land Records Explorer',
     'calendar': 'Statutory Compliance & Limitation Calendar',
@@ -909,10 +909,10 @@ function renderInitialAnalysisState() {
         Awaiting Legal Problem
       </h4>
       <p style="font-size: 12.5px; color: var(--text-secondary); max-width: 440px; margin: 0 auto 16px auto; line-height: 1.55;">
-        Describe your legal issue on the left, save your API key, and click <strong>Analyze Statutory Provisions</strong> to retrieve real-time governing statutes, limitation deadlines, and citizen remedies.
+        Describe your legal issue on the left and click <strong>Analyze Statutory Provisions</strong> to retrieve statutory provisions, limitation deadlines, and citizen remedies grounded in Indian law.
       </p>
-      <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; background: #f8fafc; border: 1px solid var(--border); padding: 5px 12px; border-radius: var(--radius-full); color: var(--text-secondary);">
-        <span>Live AI Engine via Configured API Key</span>
+      <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; background: #f0fdf4; border: 1px solid #bbf7d0; padding: 5px 12px; border-radius: var(--radius-full); color: #166534;">
+        <span>Statutory AI Legal Engine Active</span>
       </div>
     </div>
   `;
@@ -931,57 +931,38 @@ async function processLegalQuery() {
     return;
   }
 
-  const apiKey = getStoredApiKey() || (document.getElementById('inpApiKey') ? document.getElementById('inpApiKey').value.trim() : '');
-
-  if (!apiKey) {
-    if (container) {
-      container.innerHTML = `
-        <div style="background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706; border-radius: var(--radius-md); padding: 18px 20px;">
-          <h4 style="font-family: 'Plus Jakarta Sans', sans-serif; color: #92400e; margin-bottom: 6px; font-size: 14.5px; font-weight: 700;">
-            API Key Required
-          </h4>
-          <p style="font-size: 12.5px; color: #78350f; margin-bottom: 12px; line-height: 1.55;">
-            To analyze this legal grievance, please enter your Gemini or AI API key in the <strong>AI Engine API Key</strong> box on the left and click <strong>Save</strong>.
-          </p>
-          <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('inpApiKey').focus()">Enter API Key</button>
-        </div>
-      `;
-    }
-    return;
-  }
-
   // Loading state
   if (btn) {
     btn.disabled = true;
-    btn.innerText = 'Analyzing with API...';
+    btn.innerText = 'Analyzing with Statutory AI...';
   }
   if (container) {
     container.innerHTML = `
       <div style="text-align: center; padding: 50px 20px; color: var(--text-secondary);">
         <div style="display: inline-block; width: 36px; height: 36px; border: 3px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.9s linear infinite; margin-bottom: 14px;"></div>
-        <div style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14.5px; font-weight: 700; color: var(--primary);">Querying Live Legal AI Engine...</div>
-        <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Identifying governing acts, sections, limitation periods, and remedies</div>
+        <div style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14.5px; font-weight: 700; color: var(--primary);">Querying Statutory Legal AI Gateway...</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">Strictly referencing Constitution of India, statutory codes, limitation deadlines, and remedies</div>
       </div>
     `;
   }
 
   try {
-    const analysisData = await fetchLegalAnalysisFromAPI(q, apiKey);
+    const analysisData = await fetchLegalAnalysisFromAPI(q);
     currentAnalysisData = analysisData;
     renderAnalysis(analysisData);
   } catch (err) {
-    console.error('API Error:', err);
+    console.error('Statutory AI Gateway Error:', err);
     if (container) {
       container.innerHTML = `
         <div style="background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #dc2626; border-radius: var(--radius-md); padding: 18px 20px;">
           <h4 style="font-family: 'Plus Jakarta Sans', sans-serif; color: #991b1b; margin-bottom: 6px; font-size: 14.5px; font-weight: 700;">
-            API Request Failed
+            Statutory AI Request Failed
           </h4>
           <p style="font-size: 12.5px; color: #7f1d1d; margin-bottom: 10px; line-height: 1.5;">
-            ${escapeHtml(err.message || 'An error occurred while contacting the AI API.')}
+            ${escapeHtml(err.message || 'An error occurred while contacting the Statutory AI gateway.')}
           </p>
           <div style="font-size: 11.5px; color: #991b1b; margin-bottom: 12px;">
-            Please check that your API key is correct, active, and has sufficient quota.
+            Ensure the statutory advisory gateway service is running and network connectivity is active.
           </div>
           <button type="button" class="btn btn-default btn-sm" onclick="processLegalQuery()">Retry Request</button>
         </div>
@@ -995,65 +976,27 @@ async function processLegalQuery() {
   }
 }
 
-async function fetchLegalAnalysisFromAPI(query, apiKey) {
-  const prompt = `You are NyayaSetu, an expert Indian legal literacy and statutory assistance platform.
-Analyze the following citizen legal grievance under Indian Law (including Bharatiya Nyaya Sanhita 2023, Bharatiya Nagarik Suraksha Sanhita 2023, Bharatiya Sakshya Adhiniyam 2023, and applicable Central/State Statutes):
-
-Grievance: "${query}"
-
-Return ONLY a valid JSON object (without markdown code blocks, backticks, or other text) with the following exact keys:
-{
-  "act": "Primary governing Act(s) (e.g. Negotiable Instruments Act, 1881 / Consumer Protection Act, 2019 / Transfer of Property Act, 1882 / BNS 2023)",
-  "title": "Clear, formal legal title of the matter",
-  "summary": "Clear, concise 2-3 sentence explanation of the citizen's legal position",
-  "sections": ["Section X (Brief Description)", "Section Y (Brief Description)"],
-  "limitation": "Statutory limitation period and timeline under Limitation Act, 1963 or relevant Act",
-  "court": "Competent court, tribunal, forum or authority with jurisdiction",
-  "remedies": ["Actionable step 1", "Actionable step 2", "Actionable step 3"],
-  "docType": "one of: sec138, rti, consumer, eviction, affidavit",
-  "sender": "Suggested applicant/sender name or role",
-  "recipient": "Suggested opposite party name or authority",
-  "particulars": "Key transaction, property, or dispute particulars",
-  "grievance": "Concise factual grievance statement for drafting legal notice"
-}`;
-
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
-
-  const response = await fetch(endpoint, {
+async function fetchLegalAnalysisFromAPI(query) {
+  const response = await fetch('/api/ai/analyze', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.2
-      }
-    })
+    body: JSON.stringify({ query })
   });
 
   if (!response.ok) {
     const errorJson = await response.json().catch(() => ({}));
-    const message = errorJson.error && errorJson.error.message ? errorJson.error.message : `HTTP ${response.status} ${response.statusText}`;
+    const message = errorJson.error || `HTTP ${response.status} ${response.statusText}`;
     throw new Error(message);
   }
 
   const result = await response.json();
-  const candidate = result.candidates && result.candidates[0];
-  if (!candidate || !candidate.content || !candidate.content.parts || !candidate.content.parts[0]) {
-    throw new Error("No response content generated by the AI API.");
+  if (!result || !result.act) {
+    throw new Error("Invalid statutory analysis format received from server.");
   }
 
-  let text = candidate.content.parts[0].text.trim();
-  if (text.startsWith('```json')) {
-    text = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-  } else if (text.startsWith('```')) {
-    text = text.replace(/^```\s*/, '').replace(/\s*```$/, '');
-  }
-
-  const parsed = JSON.parse(text);
-  if (!Array.isArray(parsed.sections)) parsed.sections = [parsed.sections || 'General Statutory Provisions'];
-  if (!Array.isArray(parsed.remedies)) parsed.remedies = [parsed.remedies || 'Consult competent legal counsel'];
-  return parsed;
+  if (!Array.isArray(result.sections)) result.sections = [result.sections || 'General Statutory Provisions'];
+  if (!Array.isArray(result.remedies)) result.remedies = [result.remedies || 'Consult competent legal counsel'];
+  return result;
 }
 
 function renderAnalysis(item) {
@@ -1100,9 +1043,30 @@ function transferToDrafter() {
   }
 
   const item = currentAnalysisData;
-  if (document.getElementById('selectDocType')) {
-    document.getElementById('selectDocType').value = item.docType || 'affidavit';
+  const select = document.getElementById('selectDocType');
+  if (select) {
+    select.value = item.docType || 'affidavit';
   }
+
+  // Synchronize labels, placeholders & badge for selected template
+  const drafter = (typeof window !== 'undefined' && window.NyayaDrafter) ? window.NyayaDrafter : null;
+  const tpl = drafter && drafter.PLEADING_TEMPLATES ? drafter.PLEADING_TEMPLATES[select ? select.value : 'affidavit'] : null;
+  if (tpl) {
+    const lblSender = document.getElementById('lblSender');
+    const lblRecipient = document.getElementById('lblRecipient');
+    const lblParticulars = document.getElementById('lblParticulars');
+    const lblGrievance = document.getElementById('lblGrievance');
+    const lblPlace = document.getElementById('lblPlace');
+    const badge = document.getElementById('drafterTemplateBadge');
+
+    if (lblSender && tpl.labels.sender) lblSender.innerText = tpl.labels.sender;
+    if (lblRecipient && tpl.labels.recipient) lblRecipient.innerText = tpl.labels.recipient;
+    if (lblParticulars && tpl.labels.particulars) lblParticulars.innerText = tpl.labels.particulars;
+    if (lblGrievance && tpl.labels.grievance) lblGrievance.innerText = tpl.labels.grievance;
+    if (lblPlace && tpl.labels.place) lblPlace.innerText = tpl.labels.place;
+    if (badge && tpl.badge) badge.innerText = tpl.badge;
+  }
+
   if (document.getElementById('inpSender') && item.sender) {
     document.getElementById('inpSender').value = item.sender;
   }
@@ -1123,204 +1087,442 @@ function transferToDrafter() {
 // COURT PLEADING DRAFTER
 // ==========================================================================
 
-function renderPleading() {
-  const type = document.getElementById('selectDocType').value;
-  const sender = document.getElementById('inpSender').value || "Applicant Name";
-  const recipient = document.getElementById('inpRecipient').value || "Opposite Party Name";
-  const particulars = document.getElementById('inpParticulars').value || "Matter Particulars";
-  const grievance = document.getElementById('inpGrievance').value || "Grievance details";
-  const place = document.getElementById('inpPlace').value || "Nagpur, Maharashtra";
-  const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+let isDirectEditingActive = false;
+let toastTimeout = null;
 
+function showDrafterToast(msg) {
+  const toast = document.getElementById('drafterToast');
+  const txt = document.getElementById('drafterToastText');
+  if (toast && txt) {
+    txt.innerText = msg;
+    toast.style.display = 'flex';
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+      toast.style.display = 'none';
+    }, 4500);
+  }
+}
+
+function hideDrafterToast() {
+  const toast = document.getElementById('drafterToast');
+  if (toast) toast.style.display = 'none';
+}
+
+function handleDocTypeChange() {
+  const select = document.getElementById('selectDocType');
+  if (!select) return;
+  const type = select.value;
+
+  const drafter = (typeof window !== 'undefined' && window.NyayaDrafter) ? window.NyayaDrafter : null;
+  const tpl = drafter && drafter.PLEADING_TEMPLATES ? drafter.PLEADING_TEMPLATES[type] : null;
+
+  if (tpl) {
+    // Update Labels
+    const lblSender = document.getElementById('lblSender');
+    const lblRecipient = document.getElementById('lblRecipient');
+    const lblParticulars = document.getElementById('lblParticulars');
+    const lblGrievance = document.getElementById('lblGrievance');
+    const lblPlace = document.getElementById('lblPlace');
+    const badge = document.getElementById('drafterTemplateBadge');
+
+    if (lblSender && tpl.labels.sender) lblSender.innerText = tpl.labels.sender;
+    if (lblRecipient && tpl.labels.recipient) lblRecipient.innerText = tpl.labels.recipient;
+    if (lblParticulars && tpl.labels.particulars) lblParticulars.innerText = tpl.labels.particulars;
+    if (lblGrievance && tpl.labels.grievance) lblGrievance.innerText = tpl.labels.grievance;
+    if (lblPlace && tpl.labels.place) lblPlace.innerText = tpl.labels.place;
+    if (badge && tpl.badge) badge.innerText = tpl.badge;
+
+    // Update Placeholders
+    const inpSender = document.getElementById('inpSender');
+    const inpRecipient = document.getElementById('inpRecipient');
+    const inpParticulars = document.getElementById('inpParticulars');
+    const inpGrievance = document.getElementById('inpGrievance');
+    const inpPlace = document.getElementById('inpPlace');
+
+    if (inpSender && tpl.placeholders.sender) inpSender.placeholder = tpl.placeholders.sender;
+    if (inpRecipient && tpl.placeholders.recipient) inpRecipient.placeholder = tpl.placeholders.recipient;
+    if (inpParticulars && tpl.placeholders.particulars) inpParticulars.placeholder = tpl.placeholders.particulars;
+    if (inpGrievance && tpl.placeholders.grievance) inpGrievance.placeholder = tpl.placeholders.grievance;
+    if (inpPlace && tpl.placeholders.place) inpPlace.placeholder = tpl.placeholders.place;
+  }
+
+  // Turn off manual editing mode when switching templates to show clean preview
+  if (isDirectEditingActive) {
+    toggleEditPreview();
+  }
+
+  renderPleading();
+}
+
+function resetDrafterDefaults() {
+  const select = document.getElementById('selectDocType');
+  const type = select ? select.value : 'sec138';
+  const drafter = (typeof window !== 'undefined' && window.NyayaDrafter) ? window.NyayaDrafter : null;
+  const tpl = drafter && drafter.PLEADING_TEMPLATES ? drafter.PLEADING_TEMPLATES[type] : null;
+
+  if (tpl) {
+    const inpSender = document.getElementById('inpSender');
+    const inpRecipient = document.getElementById('inpRecipient');
+    const inpParticulars = document.getElementById('inpParticulars');
+    const inpGrievance = document.getElementById('inpGrievance');
+    const inpPlace = document.getElementById('inpPlace');
+
+    if (inpSender) inpSender.value = '';
+    if (inpRecipient) inpRecipient.value = '';
+    if (inpParticulars) inpParticulars.value = '';
+    if (inpGrievance) inpGrievance.value = '';
+    if (inpPlace) inpPlace.value = '';
+  }
+
+  if (isDirectEditingActive) {
+    toggleEditPreview();
+  }
+
+  renderPleading();
+  showDrafterToast("Cleared drafter inputs to general template defaults.");
+}
+
+function toggleEditPreview() {
+  const paper = document.getElementById('pleadingPaper');
+  const banner = document.getElementById('drafterEditBanner');
+  const btn = document.getElementById('btnToggleEditPreview');
+  if (!paper) return;
+
+  isDirectEditingActive = !isDirectEditingActive;
+
+  if (isDirectEditingActive) {
+    paper.contentEditable = "true";
+    paper.classList.add('is-editing');
+    if (banner) banner.style.display = 'flex';
+    if (btn) {
+      btn.innerText = "Lock Preview";
+      btn.classList.add('btn-primary');
+      btn.classList.remove('btn-default');
+    }
+    paper.focus();
+  } else {
+    paper.contentEditable = "false";
+    paper.classList.remove('is-editing');
+    if (banner) banner.style.display = 'none';
+    if (btn) {
+      btn.innerText = "Edit Draft Directly";
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-default');
+    }
+  }
+}
+
+function renderPleading() {
   const paper = document.getElementById('pleadingPaper');
   if (!paper) return;
 
-  if (type === 'sec138') {
-    paper.innerHTML = `
-      <div class="pleading-seal">LEGAL<br>NOTICE<br>SEC 138</div>
-      <div class="pleading-header">
-        STATUTORY DEMAND NOTICE UNDER SECTION 138 OF THE NEGOTIABLE INSTRUMENTS ACT, 1881
-      </div>
-      <div style="text-align: right; margin-bottom: 12px; font-size: 11px;">
-        <strong>SPEED POST / REGISTERED POST A.D.</strong><br>
-        Date: ${today} | Station: ${place}
-      </div>
-      <p><strong>TO:</strong><br>${recipient}<br>(DRAWER / OPPOSITE PARTY)</p>
-      <p style="margin-top: 8px;"><strong>FROM:</strong><br>${sender}<br>(PAYEE / SENDER)</p>
-      <p style="margin-top: 10px;"><strong>SUBJECT:</strong> STATUTORY DEMAND NOTICE UNDER SECTION 138 READ WITH SECTION 142 OF THE NEGOTIABLE INSTRUMENTS ACT, 1881.</p>
-      <p style="margin-top: 10px;"><strong>SIR / MADAM,</strong></p>
-      <p style="margin-top: 6px;">Under instructions and authority from myself / client, I hereby serve upon you this mandatory Statutory Notice:</p>
-      <ol style="padding-left: 20px; margin-top: 6px;">
-        <li>That towards the discharge of your legally enforceable debt, you issued in favour of the Payee: <em>${particulars}</em>.</li>
-        <li>That the said cheque was deposited for encashment, but was returned unpaid and dishonoured by the bank with memo stating: <em>${grievance}</em>.</li>
-        <li>That your failure to maintain sufficient funds constitutes a criminal offence under Section 138 of the Negotiable Instruments Act, 1881.</li>
-      </ol>
-      <p style="margin-top: 12px; background: #fffde7; border: 1px solid #ffe082; padding: 8px;">
-        <strong>MANDATORY STATUTORY DEMAND:</strong><br>
-        You are hereby called upon to pay the entire outstanding sum within <strong>15 (FIFTEEN) DAYS</strong> of the receipt of this notice, failing which a criminal complaint under Section 138 of the NI Act shall be filed against you in the Competent Criminal Court at your sole risk and costs.
-      </p>
-      <div style="margin-top: 35px; display: flex; justify-content: space-between;">
-        <div>Station: ${place}<br>Date: ${today}</div>
-        <div style="text-align: right;">_______________________________<br><strong>${sender}</strong><br>(Signature of Payee / Complainant)</div>
-      </div>
-    `;
-  } else if (type === 'rti') {
-    paper.innerHTML = `
-      <div class="pleading-seal">RTI ACT<br>2005<br>FORM A</div>
-      <div class="pleading-header">
-        FORM A — APPLICATION FOR SEEKING INFORMATION UNDER SECTION 6(1) OF THE RTI ACT, 2005
-      </div>
-      <div style="text-align: right; margin-bottom: 12px; font-size: 11px;">Date: ${today} | Place: ${place}</div>
-      <p><strong>TO:</strong><br>The Public Information Officer (PIO),<br>${recipient}</p>
-      <p style="margin-top: 8px;"><strong>1. Name of Applicant:</strong> ${sender}</p>
-      <p><strong>2. Address for Correspondence:</strong> ${place}</p>
-      <p><strong>3. Citizenship:</strong> Citizen of India</p>
-      <p style="margin-top: 8px;"><strong>4. Particulars of Information Sought:</strong><br>Subject Matter: <em>${particulars}</em></p>
-      <p style="background: #f7f9fa; border: 1px solid #ddd; padding: 6px; margin-top: 4px;">${grievance}</p>
-      <p style="margin-top: 8px;"><strong>5. Application Fee:</strong> Statutory Fee of Rs 10 paid via Court Fee Stamp / Postal Order No. <strong>IPO-89142-2026</strong>.</p>
-      <p style="margin-top: 8px;"><strong>6. Declaration:</strong> I state that the information sought falls strictly under Section 2(f) and 2(j) of the RTI Act, 2005 and is not exempt under Section 8 or 9.</p>
-      <div style="margin-top: 35px; display: flex; justify-content: space-between;">
-        <div>Encl: Fee Stamp Rs 10</div>
-        <div style="text-align: right;">_______________________________<br><strong>${sender}</strong><br>(Signature of Citizen Applicant)</div>
-      </div>
-    `;
-  } else if (type === 'consumer') {
-    paper.innerHTML = `
-      <div class="pleading-seal">CONSUMER<br>NOTICE<br>CPA 2019</div>
-      <div class="pleading-header">
-        LEGAL NOTICE FOR DEFICIENCY OF SERVICE UNDER CONSUMER PROTECTION ACT, 2019
-      </div>
-      <div style="text-align: right; margin-bottom: 12px; font-size: 11px;">Date: ${today} | Regd Post AD</div>
-      <p><strong>TO:</strong> ${recipient}<br><strong>FROM:</strong> ${sender} (${place})</p>
-      <p style="margin-top: 8px;"><strong>SUBJECT:</strong> DEFICIENCY IN SERVICE AND PRODUCT DEFECT: ${particulars}.</p>
-      <p style="margin-top: 8px;"><strong>FACTS:</strong><br>1. The Complainant purchased/availed: <em>${particulars}</em>.<br>2. That the said product/service suffered from defect: <em>${grievance}</em>.<br>3. That you neglected to replace the product or refund the consideration.</p>
-      <p style="margin-top: 10px; background: #fffde7; border: 1px solid #ffe082; padding: 6px;">
-        <strong>DEMAND:</strong> You are called upon to refund the purchase amount with Rs 25,000 damages within <strong>15 DAYS</strong>, failing which complaint under Section 35 of CPA 2019 shall be filed.
-      </p>
-      <div style="margin-top: 35px; text-align: right;">_______________________________<br><strong>${sender}</strong><br>(Consumer / Complainant)</div>
-    `;
-  } else if (type === 'eviction') {
-    paper.innerHTML = `
-      <div class="pleading-seal">LEGAL<br>NOTICE<br>T.P. ACT</div>
-      <div class="pleading-header">
-        NOTICE OF TERMINATION OF TENANCY UNDER SECTION 106, TRANSFER OF PROPERTY ACT, 1882
-      </div>
-      <div style="text-align: right; margin-bottom: 12px; font-size: 11px;">Date: ${today} | Place: ${place}</div>
-      <p><strong>TO (TENANT):</strong> ${recipient}<br><strong>FROM (LANDLORD):</strong> ${sender} (${place})</p>
-      <p style="margin-top: 8px;"><strong>PREMISES:</strong> ${particulars}</p>
-      <p style="margin-top: 8px;"><strong>FACTS & BREACH:</strong> You have committed breach of tenancy terms: <em>${grievance}</em>.</p>
-      <p style="margin-top: 8px;"><strong>NOTICE:</strong> Your tenancy is hereby terminated upon expiration of 30 days from receipt. You are called upon to vacate and deliver peaceful possession.</p>
-      <div style="margin-top: 35px; text-align: right;">_______________________________<br><strong>${sender}</strong><br>(Landlord / Owner)</div>
-    `;
-  } else {
-    paper.innerHTML = `
-      <div class="pleading-seal">SWORN<br>AFFIDAVIT<br>NOTARIAL</div>
-      <div class="pleading-header">
-        BEFORE THE EXECUTIVE MAGISTRATE / NOTARY PUBLIC AT ${place.toUpperCase()}
-      </div>
-      <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">AFFIDAVIT / SELF-DECLARATION</div>
-      <p>I, <strong>${sender}</strong>, residing at ${place}, do hereby solemnly affirm and state on oath as under:</p>
-      <ol style="padding-left: 20px; margin-top: 8px; line-height: 1.8;">
-        <li>That I am the deponent herein and conversant with the facts of the matter: <em>${particulars}</em>.</li>
-        <li>That I state that: <em>${grievance}</em>.</li>
-        <li>That the contents of paragraphs 1 to 2 above are true and correct to my personal knowledge.</li>
-      </ol>
-      <p style="margin-top: 15px;"><strong>VERIFICATION:</strong> Verified at ${place} on ${today} that the contents of this affidavit are true.</p>
-      <div style="margin-top: 35px; display: flex; justify-content: space-between;">
-        <div>Solemnly affirmed before me:<br>Notary Public / Oath Commissioner</div>
-        <div style="text-align: right;">_______________________________<br><strong>DEPONENT (${sender})</strong></div>
-      </div>
-    `;
+  // Don't overwrite in-flight direct edits unless user has locked preview
+  if (isDirectEditingActive) {
+    return;
   }
 
-  const dlUser = getDigiLockerUser();
-  if (dlUser) {
-    paper.innerHTML += `
-      <div class="pleading-digilocker-stamp">
-        <div class="stamp-icon">✓</div>
-        <div class="stamp-text">
-          <strong>DIGILOCKER e-KYC VERIFIED COMPLAINANT / PETITIONER</strong>
-          Verified Identity: ${dlUser.name} &bull; Masked Token: ${dlUser.maskedUid || dlUser.bciReg || 'Verified'} &bull; Digital ID: ${dlUser.digilockerId}<br>
-          <span style="font-size: 10.5px; color: #15803d;">Statutory Compliance: Section 4 Aadhaar Act, 2016 &bull; Section 65B Bharatiya Sakshya Adhiniyam, 2023 &bull; SHA-256 Validated</span>
-        </div>
-      </div>
+  const select = document.getElementById('selectDocType');
+  const type = select ? select.value : 'sec138';
+
+  const sender = document.getElementById('inpSender') ? document.getElementById('inpSender').value.trim() : '';
+  const recipient = document.getElementById('inpRecipient') ? document.getElementById('inpRecipient').value.trim() : '';
+  const particulars = document.getElementById('inpParticulars') ? document.getElementById('inpParticulars').value.trim() : '';
+  const grievance = document.getElementById('inpGrievance') ? document.getElementById('inpGrievance').value.trim() : '';
+  const place = document.getElementById('inpPlace') ? document.getElementById('inpPlace').value.trim() : '';
+  const dlUser = (typeof getDigiLockerUser === 'function') ? getDigiLockerUser() : null;
+
+  const drafter = (typeof window !== 'undefined' && window.NyayaDrafter) ? window.NyayaDrafter : null;
+
+  if (drafter && typeof drafter.generatePleadingHtml === 'function') {
+    paper.innerHTML = drafter.generatePleadingHtml({
+      type,
+      sender,
+      recipient,
+      particulars,
+      grievance,
+      place,
+      dlUser
+    });
+  } else {
+    // Basic fallback if drafter_logic hasn't loaded
+    paper.innerHTML = `
+      <div class="pleading-header">${type.toUpperCase()} PLEADING BRIEF</div>
+      <p><strong>FROM:</strong> ${sender}</p>
+      <p><strong>TO:</strong> ${recipient}</p>
+      <p><strong>PARTICULARS:</strong> ${particulars}</p>
+      <p><strong>GRIEVANCE:</strong> ${grievance}</p>
+      <p><strong>STATION:</strong> ${place}</p>
     `;
   }
+}
+
+function printPleadingPaper() {
+  window.print();
 }
 
 function copyPleadingText() {
   const paper = document.getElementById('pleadingPaper');
-  navigator.clipboard.writeText(paper.innerText).then(() => {
-    alert("Pleading text copied to clipboard.");
-  });
+  if (!paper) return;
+  const text = paper.innerText || paper.textContent || "";
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showDrafterToast("Statutory pleading text copied to clipboard.");
+    }).catch(() => {
+      fallbackCopyText(text);
+    });
+  } else {
+    fallbackCopyText(text);
+  }
+}
+
+function fallbackCopyText(text) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showDrafterToast("Statutory pleading text copied to clipboard.");
+  } catch (err) {
+    showDrafterToast("Could not copy automatically. Please select text manually.");
+  }
+}
+
+function downloadPleadingDoc() {
+  const paper = document.getElementById('pleadingPaper');
+  if (!paper) return;
+
+  const select = document.getElementById('selectDocType');
+  const type = select ? select.value : 'notice';
+
+  const fullHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head>
+      <meta charset="utf-8">
+      <title>NyayaSetu Statutory Legal Pleading</title>
+      <style>
+        body { font-family: 'Times New Roman', Georgia, serif; font-size: 12pt; line-height: 1.6; color: #000; margin: 1in; }
+        .pleading-header { text-align: center; font-weight: bold; font-size: 14pt; border-bottom: 2px solid #000; padding-bottom: 6pt; margin-bottom: 14pt; }
+        .pleading-seal { text-align: right; font-size: 9pt; font-weight: bold; color: #881337; margin-bottom: 8pt; }
+        .pleading-digilocker-stamp { border: 1.5px dashed #16a34a; background-color: #f0fdf4; padding: 10pt; margin-top: 18pt; font-size: 10pt; color: #166534; }
+      </style>
+    </head>
+    <body>
+      ${paper.innerHTML}
+    </body>
+    </html>
+  `;
+
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `NyayaSetu_${type.toUpperCase()}_Pleading_${Date.now()}.doc`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showDrafterToast("Pleading brief downloaded (.doc).");
 }
 
 function downloadPleadingText() {
   const paper = document.getElementById('pleadingPaper');
+  if (!paper) return;
+  const select = document.getElementById('selectDocType');
+  const type = select ? select.value : 'notice';
+
   const blob = new Blob([paper.innerText], { type: 'text/plain;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `NyayaSetu_Legal_Pleading_${Date.now()}.txt`;
+  a.download = `NyayaSetu_${type.toUpperCase()}_Pleading_${Date.now()}.txt`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
+  showDrafterToast("Pleading brief downloaded (.txt).");
 }
 
 // ==========================================================================
-// BHASHINI VOICE ASSISTANT
+// SWAYAM INDIC VOICE ASSISTANT
 // ==========================================================================
 
 let speechLang = 'hi-IN';
 let recording = false;
+let activeMediaRecorder = null;
+let recordedAudioChunks = [];
+let isGrievanceRecording = false;
 
 function setSpeechLanguage() {
   speechLang = document.getElementById('selectLang').value;
 }
 
-function toggleRecordVoice() {
+async function startAudioCapture() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    throw new Error("Microphone access is not supported by your browser.");
+  }
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  recordedAudioChunks = [];
+  activeMediaRecorder = new MediaRecorder(stream);
+  activeMediaRecorder.ondataavailable = (e) => {
+    if (e.data && e.data.size > 0) {
+      recordedAudioChunks.push(e.data);
+    }
+  };
+  activeMediaRecorder.start();
+  return activeMediaRecorder;
+}
+
+async function stopAudioCaptureAndDetect(targetLang = 'unknown') {
+  return new Promise((resolve, reject) => {
+    if (!activeMediaRecorder || activeMediaRecorder.state === 'inactive') {
+      return reject(new Error("No active recording session."));
+    }
+
+    activeMediaRecorder.onstop = async () => {
+      if (activeMediaRecorder.stream) {
+        activeMediaRecorder.stream.getTracks().forEach(t => t.stop());
+      }
+
+      const mimeType = activeMediaRecorder.mimeType || 'audio/webm';
+      const audioBlob = new Blob(recordedAudioChunks, { type: mimeType });
+
+      if (audioBlob.size < 100) {
+        return resolve({ transcript: '', language_code: targetLang });
+      }
+
+      try {
+        const response = await fetch(`/api/ai/voice-detect?lang=${encodeURIComponent(targetLang)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': mimeType
+          },
+          body: audioBlob
+        });
+
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}));
+          throw new Error(err.details || err.error || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        resolve(data);
+      } catch (err) {
+        reject(err);
+      }
+    };
+
+    activeMediaRecorder.stop();
+  });
+}
+
+async function toggleRecordVoice() {
   const btn = document.getElementById('btnRecord');
   const status = document.getElementById('micStatus');
 
   if (!recording) {
-    recording = true;
-    btn.innerText = 'Stop Recording';
-    btn.className = 'btn btn-default btn-sm';
-    status.style.display = 'block';
-
-    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRec) {
-      const rec = new SpeechRec();
-      rec.lang = speechLang;
-      rec.start();
-      rec.onresult = (e) => {
-        const text = e.results[0][0].transcript;
-        addVoiceBubble(text, true);
-        stopRecording();
-      };
-      rec.onerror = () => stopRecording();
-    } else {
-      setTimeout(() => {
-        if (recording) {
-          const sample = speechLang.startsWith('mr') 
-            ? "माझे घरमालक २ महिन्यांचे डिपॉझिट परत करत नाहीत, मला काय करावे लागेल?"
-            : "चेक बाउंस हो गया है, मुझे क्या कानूनी कदम उठाने चाहिए?";
-          addVoiceBubble(sample, true);
-          stopRecording();
-        }
-      }, 3000);
+    try {
+      await startAudioCapture();
+      recording = true;
+      if (btn) {
+        btn.innerText = 'Stop & Detect Voice';
+        btn.className = 'btn btn-danger btn-sm';
+      }
+      if (status) {
+        status.style.display = 'block';
+        status.innerText = 'Listening to microphone... Speak in your regional language (Hindi, Marathi, English, Tamil).';
+      }
+    } catch (err) {
+      console.error('Mic access error:', err);
+      alert('Could not access microphone: ' + err.message);
     }
   } else {
-    stopRecording();
+    recording = false;
+    if (btn) {
+      btn.innerText = 'Detecting Voice...';
+      btn.disabled = true;
+    }
+    if (status) {
+      status.innerText = 'Detecting Indic voice with Sarvam AI Saaras:v4...';
+    }
+
+    try {
+      const result = await stopAudioCaptureAndDetect(speechLang || 'unknown');
+      if (status) status.style.display = 'none';
+
+      if (result.transcript && result.transcript.trim()) {
+        addVoiceBubble(result.transcript.trim(), true);
+      } else {
+        alert("No clear speech detected. Please speak into your microphone and try again.");
+      }
+    } catch (err) {
+      console.error('Voice detect error:', err);
+      if (status) status.style.display = 'none';
+      alert('Voice detection error: ' + err.message);
+    } finally {
+      if (btn) {
+        btn.innerText = 'Record Voice';
+        btn.className = 'btn btn-primary btn-sm';
+        btn.disabled = false;
+      }
+    }
   }
 }
 
-function stopRecording() {
-  recording = false;
-  const btn = document.getElementById('btnRecord');
-  const status = document.getElementById('micStatus');
-  if (btn) {
-    btn.innerText = 'Record Voice';
-    btn.className = 'btn btn-primary btn-sm';
+async function toggleRecordGrievance() {
+  const btn = document.getElementById('btnRecordGrievance');
+  const status = document.getElementById('grievanceMicStatus');
+  const txt = document.getElementById('txtUserQuery');
+
+  if (!isGrievanceRecording) {
+    try {
+      await startAudioCapture();
+      isGrievanceRecording = true;
+      if (btn) {
+        btn.innerHTML = 'Stop & Detect Voice';
+        btn.className = 'btn btn-danger';
+      }
+      if (status) {
+        status.style.display = 'inline-block';
+        status.innerText = 'Listening to microphone... Speak your legal problem.';
+      }
+    } catch (err) {
+      alert('Microphone error: ' + err.message);
+    }
+  } else {
+    isGrievanceRecording = false;
+    if (btn) {
+      btn.innerHTML = 'Detecting Voice...';
+      btn.disabled = true;
+    }
+    if (status) {
+      status.innerText = 'Detecting speech with Sarvam AI Saaras:v4...';
+    }
+
+    try {
+      const result = await stopAudioCaptureAndDetect('unknown');
+      if (status) status.style.display = 'none';
+
+      if (result.transcript && result.transcript.trim()) {
+        if (txt) {
+          txt.value = (txt.value ? txt.value + ' ' : '') + result.transcript.trim();
+        }
+      } else {
+        alert("No clear speech detected. Please try speaking again.");
+      }
+    } catch (err) {
+      if (status) status.style.display = 'none';
+      alert('Voice detection error: ' + err.message);
+    } finally {
+      if (btn) {
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -2px; margin-right: 4px;"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg> Speak Grievance`;
+        btn.className = 'btn btn-default';
+        btn.disabled = false;
+      }
+    }
   }
-  if (status) status.style.display = 'none';
 }
 
 function handleVoiceEnter(e) {
@@ -1360,64 +1562,36 @@ async function addVoiceBubble(userText, isVoice) {
   log.appendChild(userRow);
   log.scrollTop = log.scrollHeight;
 
-  const apiKey = getStoredApiKey() || (document.getElementById('inpApiKey') ? document.getElementById('inpApiKey').value.trim() : '');
-
   // Add temporary typing indicator
   const typingRow = document.createElement('div');
   typingRow.className = 'chat-row bot';
   typingRow.id = 'botTypingIndicator';
-  typingRow.innerHTML = `<em>Consulting AI Legal Assistant...</em>`;
+  typingRow.innerHTML = `<em>Consulting Statutory Legal Assistant...</em>`;
   log.appendChild(typingRow);
   log.scrollTop = log.scrollHeight;
 
-  if (!apiKey) {
-    setTimeout(() => {
-      typingRow.remove();
-      appendBotResponse(
-        `<strong>API Key Required:</strong><br>Please configure your AI API Key in the Legal Guidance portal tab to enable live multilingual responses.`,
-        `Please configure your API key in the portal settings to enable live responses.`
-      );
-    }, 600);
-    return;
-  }
-
   try {
-    const langNames = {
-      'mr-IN': 'Marathi',
-      'hi-IN': 'Hindi',
-      'en-IN': 'Indian English',
-      'ta-IN': 'Tamil'
-    };
-    const targetLang = langNames[speechLang] || 'Hindi';
-
-    const prompt = `You are NyayaSetu Bhashini, a conversational Indian legal literacy voice assistant.
-User query: "${userText}"
-Respond in ${targetLang} language concisely (maximum 2-3 short sentences). State the relevant Indian statutory law or procedure clearly and actionably for a citizen. Do not include markdown code blocks.`;
-
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
-    const response = await fetch(endpoint, {
+    const response = await fetch('/api/ai/voice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.3 }
-      })
+      body: JSON.stringify({ query: userText, lang: speechLang })
     });
 
     if (!response.ok) {
-      throw new Error(`API error HTTP ${response.status}`);
+      const errJson = await response.json().catch(() => ({}));
+      throw new Error(errJson.error || `HTTP ${response.status}`);
     }
 
     const resJson = await response.json();
-    const botText = resJson.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "No response received from AI service.";
+    const botText = resJson.reply || "No response received from statutory AI service.";
 
     typingRow.remove();
     appendBotResponse(botText.replace(/\n/g, '<br>'), botText.replace(/[*_#]/g, ''));
   } catch (err) {
     typingRow.remove();
     appendBotResponse(
-      `<strong>API Error:</strong> ${escapeHtml(err.message)}<br><small>Check API key and network connection.</small>`,
-      `API request failed. Please check your key.`
+      `<strong>Statutory Gateway Notice:</strong> ${escapeHtml(err.message)}<br><small>Please retry your query or check server connectivity.</small>`,
+      `Statutory AI request failed. Please retry.`
     );
   }
 }
@@ -1440,76 +1614,38 @@ function appendBotResponse(replyHtml, spokenText) {
   speakAudio(encodeURIComponent(spokenText));
 }
 
-function speakAudio(encoded) {
+async function speakAudio(encoded) {
   const text = decodeURIComponent(encoded);
+  if (!text) return;
+
+  try {
+    const res = await fetch('/api/ai/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, lang: speechLang || 'hi-IN' })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data.audio) {
+        const audio = new Audio('data:audio/wav;base64,' + data.audio);
+        audio.play().catch(e => console.warn('Autoplay audio blocked:', e));
+        return;
+      }
+    }
+  } catch (err) {
+    console.warn('Sarvam TTS error, falling back to speech synthesis:', err);
+  }
+
+  // Graceful browser fallback
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = speechLang;
+    u.lang = speechLang || 'hi-IN';
     u.rate = 0.95;
     window.speechSynthesis.speak(u);
   }
 }
-
-// ==========================================================================
-// eCOURTS CASE TRACKER
-// ==========================================================================
-
-const SAMPLE_CASES = {
-  "MHNG01-004521-2024": {
-    title: "Regular Civil Suit No. 142/2024",
-    court: "District & Sessions Court, Nagpur",
-    status: "Pending (Injunction Arguments)",
-    filingDate: "14-02-2024",
-    petitioner: "Devendra S. Agrawal",
-    respondent: "Vidarbha Trading Corporation",
-    acts: "Code of Civil Procedure, Order 39 Rule 1 & 2",
-    judge: "Shri R. K. Deshmukh, Civil Judge Senior Division",
-    nextHearing: "28-09-2026 (Court Hall No. 4)",
-    order: "12-08-2026: Counsel for Petitioner present. Interim order extended. Stand over to 28-09-2026 for final arguments on temporary injunction application.",
-    history: [
-      { date: "14 Feb 2024", stage: "Institution of Suit", detail: "Civil Suit 142/2024 scrutinized and registered." },
-      { date: "28 Mar 2024", stage: "Summons & Appearance", detail: "Defendant appeared through counsel and filed memo of appearance." },
-      { date: "15 Jun 2024", stage: "Framing of Issues", detail: "4 core issues framed for trial." },
-      { date: "12 Aug 2026", stage: "Interim Injunction Hearing", detail: "Arguments partly heard; matter adjourned to 28-09-2026." },
-      { date: "28 Sep 2026", stage: "Scheduled Hearing", detail: "Listed for final arguments on temporary injunction." }
-    ]
-  },
-  "DLHC01-008912-2023": {
-    title: "FAO (COMM) No. 89/2023",
-    court: "High Court of Delhi (Division Bench)",
-    status: "Reserved for Judgment",
-    filingDate: "05-09-2023",
-    petitioner: "Skyline Infra Private Limited",
-    respondent: "National Highways Authority of India (NHAI)",
-    acts: "Commercial Courts Act 2015 & Arbitration Act Sec 37",
-    judge: "Hon'ble Justice Rajiv Shakdher & Hon'ble Justice Amit Bansal",
-    nextHearing: "24-09-2026 (Pronouncement)",
-    order: "01-09-2026: Final oral arguments concluded by Senior Counsel. Written submissions filed. Judgment reserved.",
-    history: [
-      { date: "05 Sep 2023", stage: "Appeal Instituted", detail: "Commercial appeal filed under Section 37." },
-      { date: "10 Jan 2024", stage: "Notice Issued", detail: "Respondent accepted notice through Standing Counsel." },
-      { date: "01 Sep 2026", stage: "Arguments Concluded", detail: "Hearing closed; matter reserved for judgment." }
-    ]
-  },
-  "MUPU02-001290-2024": {
-    title: "Summary Criminal Case No. 891/2024",
-    court: "Court of JMFC, Pune (Court No. 8)",
-    status: "Complainant Evidence",
-    filingDate: "12-04-2024",
-    petitioner: "Pooja K. Mehra",
-    respondent: "Suresh N. Patel",
-    acts: "Negotiable Instruments Act, 1881 (Section 138)",
-    judge: "Shri S. V. Kulkarni, Judicial Magistrate First Class",
-    nextHearing: "04-10-2026 (Cross-Examination)",
-    order: "10-07-2026: Accused pleaded not guilty to plea recorded u/s 251 CrPC. Matter fixed for complainant cross-examination.",
-    history: [
-      { date: "12 Apr 2024", stage: "Complaint Registered", detail: "Verification affidavit of complainant recorded." },
-      { date: "10 Jul 2026", stage: "Plea Recorded", detail: "Plea of accused recorded; pleaded not guilty." },
-      { date: "04 Oct 2026", stage: "Evidence Hearing", detail: "Cross-examination of CW-1 scheduled." }
-    ]
-  }
-};
 
 // ==========================================================================
 // REAL-TIME eCOURTS DISTRICT PORTAL CNR SEARCH & VISITOR CAPTCHA SOLVER
@@ -1582,7 +1718,7 @@ function toggleCaptchaZoom() {
   wrapper.classList.toggle('zoomed');
   const isZoomed = wrapper.classList.contains('zoomed');
   if (btn) {
-    btn.innerHTML = isZoomed ? '🔍 Zoom Out' : '🔍 Zoom In';
+    btn.innerHTML = isZoomed ? 'Zoom Out' : 'Zoom In';
   }
 }
 
@@ -1590,7 +1726,7 @@ function cancelEcourtCaptcha() {
   const wrapper = document.getElementById('captchaImgWrapper');
   if (wrapper) wrapper.classList.remove('zoomed');
   const btn = document.getElementById('btnZoomCaptcha');
-  if (btn) btn.innerHTML = '🔍 Zoom In';
+  if (btn) btn.innerHTML = 'Zoom In';
   const captchaBox = document.getElementById('ecourtsCaptchaBox');
   if (captchaBox) captchaBox.style.display = 'none';
   const statusBanner = document.getElementById('ecourtsStatusBanner');
@@ -2310,7 +2446,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 3f79bb7b435b05321651daefd374cd681fde49965df612c4146fffa6f600114d',
         file: 'Mahabhumi_7_12_Extract_Wadi_142_2.pdf',
         filePath: 'Example_Files/Unit -1 AI in SDLC.pptx',
-        icon: '📜'
+        icon: 'DOC'
       },
       {
         id: 'doc-aadhaar-mansvi',
@@ -2323,7 +2459,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
         file: 'Aadhaar_eKYC_MansviKhupse.pdf',
         filePath: 'Example_Files/AI_in_Modeling_Unit II.pptx',
-        icon: '🪪'
+        icon: 'UID'
       },
       {
         id: 'doc-pan-mansvi',
@@ -2336,7 +2472,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
         file: 'PAN_Card_MansviKhupse.pdf',
         filePath: 'Example_Files/2. Unit II -OFDM Transmitter Numericals_compressed.pdf',
-        icon: '💳'
+        icon: 'PAN'
       },
       {
         id: 'doc-tax-mansvi',
@@ -2349,7 +2485,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 82b9a7852f82956cf57f722a4b868d447d96901844b7d142171542f7415ab5eb',
         file: 'NMC_Property_Tax_Assessment.pdf',
         filePath: 'Example_Files/Unit -1 AI in SDLC.pptx',
-        icon: '🏛️'
+        icon: 'TAX'
       },
       {
         id: 'doc-dl-mansvi',
@@ -2362,7 +2498,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 9e107d9d372bb6826bd81d3542a419d6dae2ee1adc4f5ac011045f01f423409',
         file: 'Driving_Licence_MansviKhupse.pdf',
         filePath: 'Example_Files/AI_in_Modeling_Unit II.pptx',
-        icon: '🚗'
+        icon: 'DL'
       }
     ]
   },
@@ -2394,7 +2530,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 82b9a7852f82956cf57f722a4b868d447d96901844b7d142171542f7415ab5eb',
         file: 'Cheque_Dishonour_Memo_HDFC.pdf',
         filePath: 'Example_Files/2. Unit II -OFDM Transmitter Numericals_compressed.pdf',
-        icon: '🏦'
+        icon: 'BNK'
       },
       {
         id: 'doc-aadhaar-swati',
@@ -2407,7 +2543,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 3f79bb7b435b05321651daefd374cd681fde49965df612c4146fffa6f600114d',
         file: 'Aadhaar_eKYC_SwatiKundu.pdf',
         filePath: 'Example_Files/AI_in_Modeling_Unit II.pptx',
-        icon: '🪪'
+        icon: 'UID'
       },
       {
         id: 'doc-pan-swati',
@@ -2420,7 +2556,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
         file: 'PAN_Card_SwatiKundu.pdf',
         filePath: 'Example_Files/Unit -1 AI in SDLC.pptx',
-        icon: '💳'
+        icon: 'PAN'
       },
       {
         id: 'doc-bank-swati',
@@ -2433,7 +2569,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 5e2b4d121d3fd328cb08b5531fcacdabf8a7f83b1657ff1fc53b92dc18148a1d',
         file: 'Bank_Statement_HDFC_Certified.pdf',
         filePath: 'Example_Files/2. Unit II -OFDM Transmitter Numericals_compressed.pdf',
-        icon: '📊'
+        icon: 'FIN'
       },
       {
         id: 'doc-dl-swati',
@@ -2446,7 +2582,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 9e107d9d372bb6826bd81d3542a419d6dae2ee1adc4f5ac011045f01f423409',
         file: 'Driving_Licence_SwatiKundu.pdf',
         filePath: 'Example_Files/AI_in_Modeling_Unit II.pptx',
-        icon: '🚗'
+        icon: 'DL'
       }
     ]
   },
@@ -2478,7 +2614,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
         file: 'Registered_Lease_Agreement_Bhoomi.pdf',
         filePath: 'Example_Files/Unit -1 AI in SDLC.pptx',
-        icon: '📜'
+        icon: 'LSE'
       },
       {
         id: 'doc-aadhaar-bhoomi',
@@ -2491,7 +2627,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
         file: 'Aadhaar_eKYC_BhoomiReddy.pdf',
         filePath: 'Example_Files/AI_in_Modeling_Unit II.pptx',
-        icon: '🪪'
+        icon: 'UID'
       },
       {
         id: 'doc-pan-bhoomi',
@@ -2504,7 +2640,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
         file: 'PAN_Card_BhoomiReddy.pdf',
         filePath: 'Example_Files/2. Unit II -OFDM Transmitter Numericals_compressed.pdf',
-        icon: '💳'
+        icon: 'PAN'
       },
       {
         id: 'doc-elec-bhoomi',
@@ -2517,7 +2653,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 9e107d9d372bb6826bd81d3542a419d6dae2ee1adc4f5ac011045f01f423409',
         file: 'MSEDCL_Electricity_Bill.pdf',
         filePath: 'Example_Files/AI_in_Modeling_Unit II.pptx',
-        icon: '⚡'
+        icon: 'UTL'
       },
       {
         id: 'doc-tax-bhoomi',
@@ -2530,7 +2666,7 @@ const DIGILOCKER_PROFILES = {
         hash: 'SHA256: 82b9a7852f82956cf57f722a4b868d447d96901844b7d142171542f7415ab5eb',
         file: 'NMC_Water_Tax_Invoice.pdf',
         filePath: 'Example_Files/Unit -1 AI in SDLC.pptx',
-        icon: '💧'
+        icon: 'TAX'
       }
     ]
   }
@@ -2632,16 +2768,16 @@ function renderDigiLockerHeaderUI() {
 
         <div class="dl-dropdown-actions">
           <button type="button" class="dl-dropdown-btn" onclick="openDigiLockerVault()">
-            📂 Open DigiLocker Vault (${(user.documents && user.documents.length) || 5} Docs)
+            Open DigiLocker Vault (${(user.documents && user.documents.length) || 5} Docs)
           </button>
           <button type="button" class="dl-dropdown-btn" onclick="showDpdpAuditModal()">
-            🛡️ DPDP Act 2023 Consent Audit Trail
+            DPDP Act 2023 Consent Audit Trail
           </button>
           <button type="button" class="dl-dropdown-btn" onclick="openDigiLockerModal(1)">
-            🔄 Switch Account / Re-authenticate
+            Switch Account / Re-authenticate
           </button>
           <button type="button" class="dl-dropdown-btn btn-danger-link" onclick="logoutDigiLocker()">
-            🚪 Sign Out of DigiLocker
+            Sign Out of DigiLocker
           </button>
         </div>
       </div>
@@ -2938,7 +3074,7 @@ function openDigiLockerVault() {
       return `
         <div class="dl-vault-card">
           <div class="dl-vault-doc-info">
-            <div class="dl-vault-icon-badge">${doc.icon || '📄'}</div>
+            <div class="dl-vault-icon-badge" style="font-weight: 700; font-size: 11px;">${doc.icon || 'DOC'}</div>
             <div>
               <div class="dl-vault-title">${doc.name}</div>
               <div class="dl-vault-meta">
@@ -3084,7 +3220,7 @@ function autofillFromDigiLocker() {
   if (inpPlace) inpPlace.value = user.address || 'Nagpur, Maharashtra';
 
   renderPleading();
-  alert(`Auto-filled litigant details from DigiLocker e-KYC:\n\n• Name: ${user.name}\n• Territorial Station: ${user.address}\n• Verification: Section 4 Aadhaar Act 2016 Compliant`);
+  showDrafterToast(`Auto-filled verified identity: ${user.name} (${user.maskedUid || user.bciReg || 'e-KYC Verified'})`);
 }
 
 function importLandRecordFromDigiLocker() {
@@ -3118,7 +3254,7 @@ function showDpdpAuditModal() {
   const user = getDigiLockerUser();
   if (!user) return;
   alert(
-    `🛡️ DPDP Act 2023 Statutory Consent Audit Log:\n\n` +
+    `DPDP Act 2023 Statutory Consent Audit Log:\n\n` +
     `• Consent Ref ID: ${user.consentId}\n` +
     `• Data Principal: ${user.name}\n` +
     `• Identity Provider: Licensed DigiLocker / NeGD Gateway\n` +
@@ -3204,9 +3340,9 @@ async function fetchDigiLockerServerConfig() {
           noticeBox.style.borderColor = '#fde68a';
           noticeBox.style.color = '#92400e';
           noticeBox.innerHTML = `
-            <strong>⚠️ NeGD Government Partner Client ID Notice:</strong><br>
+            <strong>NeGD Government Partner Client ID Notice:</strong><br>
             DigiLocker requires an approved <code>client_id</code> issued by the <strong>National e-Governance Division (NeGD) / API Setu</strong>. Without an approved Client ID, DigiLocker's real OAuth server will show <em>'Invalid Client ID'</em>.<br><br>
-            • To enter your approved keys, click <strong>"⚙️ API Keys &amp; Partner Setup"</strong>.<br>
+            • To enter your approved keys, click <strong>"API Keys &amp; Partner Setup"</strong>.<br>
             • For step-by-step onboarding for your university, click <strong>"Academic Registration Guide"</strong> below.
           `;
         }

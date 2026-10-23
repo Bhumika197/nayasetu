@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node test_parser.js && node test_service_errors.js"
+    "test": "node test_parser.js && node test_service_errors.js && node test_drafter.js && node test_ai.js"
   },
   "keywords": [
     "digilocker",

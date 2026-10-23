@@ -19,6 +19,12 @@ const handleSearchStart = require('./api/search/start');
 const handleRefreshCaptcha = require('./api/search/refresh-captcha');
 const handleSubmitSearch = require('./api/search/submit');
 
+// Import Statutory Legal Engine & Voice API handlers
+const handleAnalyze = require('./api/ai/analyze');
+const handleVoice = require('./api/ai/voice');
+const handleVoiceDetect = require('./api/ai/voice-detect');
+const handleTts = require('./api/ai/tts');
+
 const PORT = process.env.PORT || 3000;
 
 const MIME_TYPES = {
@@ -82,6 +88,26 @@ const server = http.createServer(async (req, res) => {
   // eCourts Search API 3: /api/search/submit
   if (pathname === '/api/search/submit') {
     return handleSubmitSearch(req, res);
+  }
+
+  // Statutory AI API 1: /api/ai/analyze
+  if (pathname === '/api/ai/analyze') {
+    return handleAnalyze(req, res);
+  }
+
+  // Statutory AI API 2: /api/ai/voice
+  if (pathname === '/api/ai/voice') {
+    return handleVoice(req, res);
+  }
+
+  // Indic Voice Detection (Speech-to-Text): /api/ai/voice-detect
+  if (pathname === '/api/ai/voice-detect') {
+    return handleVoiceDetect(req, res);
+  }
+
+  // Indic Voice Synthesis (Text-to-Speech): /api/ai/tts
+  if (pathname === '/api/ai/tts') {
+    return handleTts(req, res);
   }
 
   // Static File Serving

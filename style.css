@@ -880,21 +880,101 @@ textarea {
   text-decoration: underline;
 }
 
-/* Print Styles */
+/* Print Styles — Formatted strictly for Court Pleading / Stamp Paper output */
 @media print {
-  .top-gov-strip, .tricolor-line, .main-header, .navbar, .breadcrumb, .statutory-alert-box, .main-footer, .no-print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 20mm;
+  }
+
+  /* Hide navigation, top bars, sidebars, buttons, alerts, and unrelated tabs */
+  .top-gov-strip, .tricolor-line, .main-header, .navbar, .breadcrumb, 
+  .statutory-alert-box, .main-footer, .no-print,
+  .col-sidebar, .panel-header, .drafter-actions, #drafterEditBanner, #drafterToast,
+  .tab-content:not(#tab-autodraft), .btn, .digilocker-modal-overlay, .dl-sms-toast {
     display: none !important;
   }
+
   body {
-    background-color: #ffffff;
-    font-size: 12pt;
+    background-color: #ffffff !important;
+    font-size: 12pt !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
+
+  .page-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .two-col-layout {
+    display: block !important;
+  }
+
+  .col-main {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .panel {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .panel-body {
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .pleading-paper {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
     max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    font-size: 12pt !important;
+    line-height: 1.65 !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+    page-break-after: avoid;
   }
+
+  .pleading-paper.is-editing {
+    outline: none !important;
+  }
+
+  .pleading-seal {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .pleading-digilocker-stamp {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    border: 1px dashed #16a34a !important;
+    background: #f0fdf4 !important;
+  }
+}
+
+/* Drafting Canvas Interactive Edit Styles */
+.pleading-paper.is-editing {
+  outline: 2px dashed #0284c7 !important;
+  outline-offset: 6px;
+  background-color: #ffffff;
+  cursor: text;
+  transition: outline-color 0.2s ease;
+}
+
+.pleading-paper.is-editing:focus {
+  outline-color: #0369a1 !important;
 }
 
 /* Animations & Utility Styles */

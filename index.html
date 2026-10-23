@@ -88,7 +88,7 @@
         <span class="sub-text">प्रपत्र प्रारूपण</span>
       </button>
       <button class="nav-link" id="nav-voicebot" onclick="showTab('voicebot')">
-        Bhashini Voice Bot
+        Swayam Voice Bot
         <span class="sub-text">बहुभाषी वाणी सेवा</span>
       </button>
       <button class="nav-link" id="nav-ecourts" onclick="showTab('ecourts')">
@@ -158,25 +158,19 @@
             </div>
             <div class="panel-body">
               <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px;">
-                Enter your grievance in simple words (English, Hindi, Marathi). Powered directly by your AI API Key to identify governing statutes, sections, court jurisdiction, and actionable remedies.
+                Enter your grievance in plain language (English, हिन्दी, मराठी). Analyzes governing statutes, statutory sections, court jurisdiction, and legal remedies strictly in accordance with the Constitution of India and Indian statutory law.
               </p>
 
-              <!-- AI API Key Configuration -->
-              <div class="api-key-box" style="margin-bottom: 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <label for="inpApiKey" style="font-size: 11.5px; font-weight: 600; color: var(--text-main); margin-bottom: 0;">
-                    AI Engine API Key:
-                  </label>
-                  <span id="apiKeyStatusBadge" class="badge badge-orange" style="font-size: 10.5px;">Key Not Set</span>
+              <!-- Statutory AI Advisory Engine Status Card -->
+              <div class="api-key-box" style="margin-bottom: 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 10px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-size: 11.5px; font-weight: 700; color: #166534;">
+                    Statutory AI Advisory Engine
+                  </span>
+                  <span class="badge badge-green" style="font-size: 10px;">Statutory Gateway Active</span>
                 </div>
-                <div style="display: flex; gap: 6px; align-items: center;">
-                  <input type="password" id="inpApiKey" placeholder="Enter Gemini / AI API Key..." style="flex: 1; padding: 6px 10px; font-size: 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm);" oninput="onApiKeyInput()">
-                  <button type="button" class="btn btn-default btn-sm" id="btnToggleApiKey" onclick="toggleApiKeyVisibility()" title="Show or hide key">Show</button>
-                  <button type="button" class="btn btn-primary btn-sm" onclick="saveApiKey()">Save</button>
-                  <button type="button" class="btn btn-default btn-sm" onclick="clearApiKey()" title="Remove saved key">Clear</button>
-                </div>
-                <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 5px;">
-                  Saved locally in your browser. Used for live statutory analysis &amp; voice assistant.
+                <div style="font-size: 11px; color: #15803d; line-height: 1.45;">
+                  Pre-configured Statutory Gateway. Inquiries are strictly cross-referenced against the Constitution of India, codified Indian statutes (BNS, CPC, BNSS, BSA), and Supreme Court precedents.
                 </div>
               </div>
 
@@ -185,9 +179,16 @@
                 <textarea id="txtUserQuery" rows="5" placeholder="Describe your legal issue or grievance in detail (e.g. Landlord withholding deposit, dishonoured cheque, defective goods, cyber fraud, property dispute)..."></textarea>
               </div>
 
-              <div style="margin-top: 12px; display: flex; gap: 8px;">
+              <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
                 <button type="button" class="btn btn-primary" id="btnAnalyzeQuery" onclick="processLegalQuery()">Analyze Statutory Provisions</button>
+                <button type="button" class="btn btn-default" id="btnRecordGrievance" onclick="toggleRecordGrievance()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -2px; margin-right: 4px;"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                  Speak Grievance
+                </button>
                 <button type="button" class="btn btn-default" onclick="clearQueryInput()">Clear</button>
+                <span id="grievanceMicStatus" style="display: none; font-size: 11.5px; color: #b45309; font-weight: 600; padding: 3px 8px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px;">
+                  Listening to microphone...
+                </span>
               </div>
             </div>
           </div>
@@ -234,7 +235,7 @@
 
               <div class="form-row">
                 <label for="selectDocType">Select Pleading Type:</label>
-                <select id="selectDocType" onchange="renderPleading()">
+                <select id="selectDocType" onchange="handleDocTypeChange()">
                   <option value="sec138">Statutory Demand Notice (Section 138 NI Act)</option>
                   <option value="rti">RTI Form A Application (RTI Act, 2005)</option>
                   <option value="consumer">Consumer Grievance Notice (CPA, 2019)</option>
@@ -243,35 +244,37 @@
                 </select>
               </div>
 
-              <div class="form-row">
-                <label for="inpSender">Applicant / Sender Name:</label>
-                <input type="text" id="inpSender" value="Dev Jain" oninput="renderPleading()">
+              <div class="form-row" id="rowSender">
+                <label for="inpSender" id="lblSender">Payee / Complainant (Creditor) Name:</label>
+                <input type="text" id="inpSender" value="" placeholder="Enter Payee / Complainant (Creditor) Name" oninput="renderPleading()">
               </div>
 
-              <div class="form-row">
-                <label for="inpRecipient">Respondent / Drawer / PIO:</label>
-                <input type="text" id="inpRecipient" value="Rajesh Sharma (Prop. Sharma Enterprises)" oninput="renderPleading()">
+              <div class="form-row" id="rowRecipient">
+                <label for="inpRecipient" id="lblRecipient">Respondent / Drawer / Accused Name &amp; Address:</label>
+                <input type="text" id="inpRecipient" value="" placeholder="Enter Respondent / Drawer / Accused Name &amp; Address" oninput="renderPleading()">
               </div>
 
-              <div class="form-row">
-                <label for="inpParticulars">Transaction / Matter Particulars:</label>
-                <input type="text" id="inpParticulars" value="Cheque No. 448912 dated 10-08-2026 for INR 1,50,000 drawn on HDFC Bank" oninput="renderPleading()">
+              <div class="form-row" id="rowParticulars">
+                <label for="inpParticulars" id="lblParticulars">Cheque Particulars (Number, Date, Bank, Amount):</label>
+                <input type="text" id="inpParticulars" value="" placeholder="Enter Cheque Particulars (Number, Date, Bank, Amount)" oninput="renderPleading()">
               </div>
 
-              <div class="form-row">
-                <label for="inpGrievance">Grievance / Fact Statement:</label>
-                <textarea id="inpGrievance" rows="3" oninput="renderPleading()">Returned unpaid with bank memo dated 14-08-2026 citing 'Funds Insufficient'. Outstanding liability has remained unpaid despite demands.</textarea>
+              <div class="form-row" id="rowGrievance">
+                <label for="inpGrievance" id="lblGrievance">Dishonour Reason &amp; Bank Memo Facts:</label>
+                <textarea id="inpGrievance" rows="3" placeholder="Enter Dishonour Reason &amp; Bank Memo Facts" oninput="renderPleading()"></textarea>
               </div>
 
-              <div class="form-row">
-                <label for="inpPlace">City / Territorial Station:</label>
-                <input type="text" id="inpPlace" value="Nagpur, Maharashtra" oninput="renderPleading()">
+              <div class="form-row" id="rowPlace">
+                <label for="inpPlace" id="lblPlace">Territorial Station (City, State):</label>
+                <input type="text" id="inpPlace" value="" placeholder="Enter Territorial Station (City, State)" oninput="renderPleading()">
               </div>
 
               <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 6px;">
-                <button type="button" class="btn btn-primary" onclick="window.print()">Print Official Court Brief</button>
-                <button type="button" class="btn btn-default" onclick="copyPleadingText()">Copy Text</button>
-                <button type="button" class="btn btn-default" onclick="downloadPleadingText()">Download Brief (.txt)</button>
+                <button type="button" class="btn btn-primary" onclick="printPleadingPaper()">Print Official Court Brief</button>
+                <button type="button" class="btn btn-default" onclick="copyPleadingText()">Copy Text to Clipboard</button>
+                <button type="button" class="btn btn-default" onclick="downloadPleadingDoc()">Download Word Document (.doc)</button>
+                <button type="button" class="btn btn-default" onclick="downloadPleadingText()">Download Plain Text (.txt)</button>
+                <button type="button" class="btn btn-default" onclick="resetDrafterDefaults()" style="color: #64748b; font-size: 11px; margin-top: 4px;">Reset to Template Defaults</button>
               </div>
             </div>
           </div>
@@ -279,11 +282,30 @@
 
         <div class="col-main">
           <div class="panel">
-            <div class="panel-header">
-              <span>Court-Ready Pleading Preview (Formatted for Stamp Paper)</span>
-              <span class="badge badge-green">Standard Form</span>
+            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span>Court-Ready Pleading Preview (Formatted for Stamp Paper)</span>
+                <span class="badge badge-green" id="drafterTemplateBadge">15-Day Cure Notice (NI Act)</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button type="button" class="btn btn-default btn-sm" id="btnToggleEditPreview" onclick="toggleEditPreview()" title="Click to edit or adjust text directly in the preview paper">
+                  Edit Draft Directly
+                </button>
+              </div>
             </div>
             <div class="panel-body" style="background-color: #e9ecef; padding: 20px;">
+              <!-- Direct Editing Notification Banner -->
+              <div id="drafterEditBanner" style="display: none; background: #f0fdf4; border: 1px solid #86efac; color: #166534; font-size: 11.5px; padding: 8px 12px; border-radius: 4px; margin-bottom: 12px; align-items: center; justify-content: space-between;">
+                <span><strong>Direct Editing Mode Active:</strong> You can edit, type, or add custom clauses directly on the pleading canvas below before printing or exporting.</span>
+                <button type="button" class="btn btn-default btn-sm" onclick="toggleEditPreview()" style="padding: 2px 8px; font-size: 11px;">Lock Preview</button>
+              </div>
+
+              <!-- Toast / Feedback Bar -->
+              <div id="drafterToast" style="display: none; background: #0f172a; color: #ffffff; padding: 8px 14px; border-radius: 6px; font-size: 12px; margin-bottom: 12px; align-items: center; justify-content: space-between;">
+                <span id="drafterToastText">Action completed successfully.</span>
+                <button type="button" onclick="hideDrafterToast()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px;">&times;</button>
+              </div>
+
               <div class="pleading-paper" id="pleadingPaper">
                 <!-- Rendered by JS -->
               </div>
@@ -295,7 +317,7 @@
     </div>
 
     <!-- ==================================================================
-         3. TAB: BHASHINI MULTILINGUAL VOICE ASSISTANT
+         3. TAB: SWAYAM INDIC VOICE ASSISTANT
          ================================================================== -->
     <div class="tab-content" id="tab-voicebot">
       <div class="two-col-layout">
@@ -303,7 +325,7 @@
         <div class="col-half">
           <div class="panel">
             <div class="panel-header">
-              <span>Bhashini Conversational Assistant (वाणी सेवा)</span>
+              <span>Swayam Conversational Voice Assistant (वाणी सेवा)</span>
               <span class="badge badge-green">Online</span>
             </div>
             <div class="panel-body" style="padding: 0;">
@@ -350,9 +372,9 @@
               </fieldset>
 
               <div style="background-color: #f7f9fa; border: 1px solid #ccd1d9; padding: 12px; margin-top: 15px;">
-                <strong>About Bhashini Voice Interface:</strong>
+                <strong>About Swayam Voice Interface:</strong>
                 <p style="font-size: 12px; color: #555; margin-top: 5px;">
-                  Powered by Government of India National Language Translation Mission (NLTM) speech models. Click <strong>Record Voice</strong> to dictate your problem, or type in the box and press Submit. The system will answer in voice and text.
+                  Powered by Swayam Indic speech intelligence and multilingual recognition models. Click <strong>Record Voice</strong> to dictate your problem, or type in the box and press Submit. The system will answer in voice and text.
                 </p>
               </div>
             </div>
@@ -413,10 +435,10 @@
               </div>
               <div style="display: flex; flex-direction: column; gap: 6px;">
                 <button type="button" class="btn btn-default btn-sm" id="btnZoomCaptcha" onclick="toggleCaptchaZoom()" title="Enlarge captcha image">
-                  🔍 Zoom In
+                  Zoom In
                 </button>
                 <button type="button" class="btn btn-default btn-sm" id="btnRefreshCaptcha" onclick="refreshEcourtCaptcha()" title="Fetch a new captcha image">
-                  🔄 Refresh Image
+                  Refresh Captcha
                 </button>
               </div>
               <div class="captcha-input-group">
@@ -456,10 +478,10 @@
         </div>
         <div class="snapshot-banner-actions">
           <button type="button" class="btn btn-primary btn-sm" id="btnRefreshSnapshot" onclick="refreshCurrentSnapshot()">
-            🔄 Refresh from eCourts
+            Refresh from eCourts
           </button>
           <a href="https://services.ecourts.gov.in/ecourtindia_v6/" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-sm">
-            🌐 Open official page
+            Open Official eCourts Portal
           </a>
         </div>
       </div>
@@ -1240,10 +1262,10 @@
       <!-- Gateway Mode Switcher: 2 Tabs (Live DigiLocker Redirect vs Team Litigant Login) -->
       <div class="dl-mode-tabs">
         <button type="button" class="dl-mode-tab active" id="btnModeLiveOAuth" onclick="switchDlGatewayMode('live')">
-          🚀 Official DigiLocker Redirect (Live OAuth)
+          Official DigiLocker Redirect (Live OAuth)
         </button>
         <button type="button" class="dl-mode-tab" id="btnModeSandbox" onclick="switchDlGatewayMode('sandbox')">
-          👥 Verified Litigant Login (Mansvi, Swati, Bhoomi)
+          Verified Litigant Login (Mansvi, Swati, Bhoomi)
         </button>
       </div>
 
@@ -1285,16 +1307,16 @@
             </div>
 
             <div id="dlLiveNoticeBox" style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-top: 14px; text-align: left; font-size: 11.5px; color: #92400e; line-height: 1.45;">
-              <strong>⚠️ NeGD Government Partner Client ID Notice:</strong><br>
+              <strong>NeGD Government Partner Client ID Notice:</strong><br>
               DigiLocker is an official Government of India identity service. To prevent unauthorized data access, DigiLocker's real OAuth server rejects authorization requests if the <code>client_id</code> is not pre-registered and approved by the <strong>National e-Governance Division (NeGD) / API Setu</strong>.<br><br>
               • If your university application is in review, click <strong>"Academic Registration Guide"</strong> below for the step-by-step institutional process.<br>
-              • To test full legal drafting, pleading verification, and case rooms, use the <strong>"👥 Verified Litigant Login"</strong> tab.
+              • To test full legal drafting, pleading verification, and case rooms, use the <strong>"Verified Litigant Login"</strong> tab.
             </div>
           </div>
 
           <div style="display: flex; justify-content: center; align-items: center; margin-top: 14px;">
             <button type="button" class="btn btn-default" onclick="openPartnerRegistrationGuide()">
-              📋 Academic Institution Registration Guide
+              Academic Institution Registration Guide
             </button>
           </div>
         </div>
@@ -1324,7 +1346,7 @@
             <div style="margin-bottom: 14px;">
               <div style="font-size: 13px; font-weight: 700; color: #003366; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
                 <span>Select Verified Litigant to Sign In:</span>
-                <span style="font-size: 11px; font-weight: 600; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 12px;">✓ 3 Profiles Ready</span>
+                <span style="font-size: 11px; font-weight: 600; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 12px;">3 Profiles Configured</span>
               </div>
 
               <!-- 3 Team Profiles Grid -->
@@ -1342,7 +1364,7 @@
                     <div>UID: <strong>XXXX-XXXX-9182</strong></div>
                     <div>Phone: <strong>+91 94221 88990</strong></div>
                   </div>
-                  <div class="dl-team-tag tag-land">📂 Land &amp; Property</div>
+                  <div class="dl-team-tag tag-land">Land &amp; Property</div>
                 </div>
 
                 <!-- 2. Swati Kundu -->
@@ -1358,7 +1380,7 @@
                     <div>UID: <strong>XXXX-XXXX-7721</strong></div>
                     <div>Phone: <strong>+91 98230 11223</strong></div>
                   </div>
-                  <div class="dl-team-tag tag-cheque">⚖️ Sec 138 Cheque</div>
+                  <div class="dl-team-tag tag-cheque">Sec 138 Cheque</div>
                 </div>
 
                 <!-- 3. Chinta Bhumika Reddy (Bhoomi) -->
@@ -1374,7 +1396,7 @@
                     <div>UID: <strong>XXXX-XXXX-4529</strong></div>
                     <div>Phone: <strong>+91 99887 65432</strong></div>
                   </div>
-                  <div class="dl-team-tag tag-tenancy">📜 Tenancy / Lease</div>
+                  <div class="dl-team-tag tag-tenancy">Tenancy / Lease</div>
                 </div>
               </div>
             </div>
@@ -1387,7 +1409,7 @@
             <div class="form-row">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                 <label for="inpDlPin" style="margin-bottom: 0;">6-Digit Security PIN:</label>
-                <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Auto-authenticated (PIN: 123456)</span>
+                <span style="font-size: 11px; color: #16a34a; font-weight: 600;">Pre-authenticated (PIN: 123456)</span>
               </div>
               <input type="password" id="inpDlPin" maxlength="6" value="123456" style="letter-spacing: 4px; font-weight: bold; background: #f8fafc;" readonly>
             </div>
@@ -1404,7 +1426,7 @@
               <button type="button" class="btn btn-default" onclick="closeDigiLockerModal()">Cancel</button>
               <div style="display: flex; gap: 8px;">
                 <button type="button" class="btn btn-primary" onclick="instantTeamLogin()" style="background-color: #16a34a; border-color: #16a34a; padding: 8px 16px;">
-                  ⚡ 1-Click Fast Login
+                  1-Click Fast Login
                 </button>
                 <button type="button" class="btn btn-primary" onclick="sendDigiLockerOtp()" style="background-color: #003366; border-color: #003366; padding: 8px 16px;">
                   Simulate OTP &rarr;
@@ -1416,8 +1438,8 @@
           <!-- STEP 2: OTP & DPDP ACT 2023 CONSENT -->
           <div id="dlStep2View" style="display: none;">
             <div style="text-align: center; margin-bottom: 14px;">
-              <div style="width: 44px; height: 44px; background: #e0f2fe; color: #0284c7; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 6px;">
-                📲
+              <div style="width: 44px; height: 44px; background: #e0f2fe; color: #0284c7; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
               </div>
               <h4 style="font-size: 15px; margin: 0; color: #0f172a;">Enter 6-Digit DigiLocker OTP</h4>
               <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
@@ -1436,7 +1458,7 @@
 
             <div style="text-align: center; margin-bottom: 14px;">
               <button type="button" class="btn btn-default btn-sm" onclick="autoFillOtpDemo()" style="color: #0369a1; border-color: #bae6fd; background: #f0f9ff;">
-                ⚡ Auto-Fill Demo OTP (120645)
+                Auto-Fill Demo OTP (120645)
               </button>
               <span style="font-size: 11px; color: #94a3b8; margin-left: 10px;">Resend OTP in <span id="otpTimerDisplay">58</span>s</span>
             </div>
@@ -1460,8 +1482,8 @@
           <!-- STEP 3: VERIFICATION SUCCESS & PROFILE READY -->
           <div id="dlStep3View" style="display: none;">
             <div style="text-align: center; margin-bottom: 12px;">
-              <div style="width: 50px; height: 50px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 6px; box-shadow: 0 0 0 4px #bbf7d0;">
-                ✓
+              <div style="width: 50px; height: 50px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px; box-shadow: 0 0 0 4px #bbf7d0;">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
               </div>
               <h4 style="font-size: 16px; margin: 0; color: #15803d;">DigiLocker e-KYC Verified Successfully</h4>
               <p style="font-size: 11.5px; color: #64748b; margin: 3px 0 0 0;">
@@ -1503,7 +1525,7 @@
             </div>
 
             <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 11.5px; margin-bottom: 14px;">
-              <div style="font-weight: 700; color: #003366; margin-bottom: 4px;">📂 5 Verified Documents Synchronized to NyayaSetu:</div>
+              <div style="font-weight: 700; color: #003366; margin-bottom: 4px;">5 Verified Documents Synchronized to NyayaSetu:</div>
               <div style="color: #64748b;">
                 • Aadhaar e-KYC Credential (UIDAI)<br>
                 • Permanent Account Number (Income Tax Dept)<br>
@@ -1552,7 +1574,7 @@
         <div class="dl-guide-step-card">
           <strong>Step 1: Access the Official Partner Portal</strong>
           Navigate to the official Government of India API Setu partner registration gateway:<br>
-          👉 <a href="https://partners.apisetu.gov.in" target="_blank" style="font-weight: 700; color: #0052cc;">https://partners.apisetu.gov.in</a> (or <a href="https://partners.digitallocker.gov.in" target="_blank" style="font-weight: 700; color: #0052cc;">partners.digitallocker.gov.in</a>).
+          <a href="https://partners.apisetu.gov.in" target="_blank" style="font-weight: 700; color: #0052cc;">https://partners.apisetu.gov.in</a> (or <a href="https://partners.digitallocker.gov.in" target="_blank" style="font-weight: 700; color: #0052cc;">partners.digitallocker.gov.in</a>).
         </div>
 
         <div class="dl-guide-step-card">
@@ -1584,7 +1606,7 @@
 
         <div class="dl-guide-step-card" style="border-left-color: #16a34a; background: #f0fdf4;">
           <strong style="color: #166534;">Step 6: Enter Keys into NyayaSetu</strong>
-          Paste your <strong>Client ID</strong> and <strong>Client Secret</strong> into the <strong>"⚙️ API Keys &amp; Partner Setup"</strong> tab in NyayaSetu. Live real DigiLocker login will immediately activate!
+          Paste your <strong>Client ID</strong> and <strong>Client Secret</strong> into the <strong>"API Keys &amp; Partner Setup"</strong> tab in NyayaSetu. Live real DigiLocker login will immediately activate!
         </div>
 
         <div style="margin-top: 18px; display: flex; justify-content: flex-end;">
@@ -1592,24 +1614,6 @@
             I Understand &amp; Close Guide
           </button>
         </div>
-      </div>
-    </div>
-  </div>KYC Credential (UIDAI)<br>
-              • Permanent Account Number (Income Tax Dept)<br>
-              • Mahabhumi 7/12 Land Rights Extract (Revenue Dept)<br>
-              • Cheque Dishonour Memo &amp; Bank Slip (HDFC Bank)<br>
-              • Driving Licence (MoRTH)
-            </div>
-          </div>
-
-          <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button type="button" class="btn btn-default" onclick="openDigiLockerVault()">View Documents Vault</button>
-            <button type="button" class="btn btn-primary" onclick="closeDigiLockerModal()" style="background-color: #003366; border-color: #003366; padding: 8px 18px;">
-              Enter NyayaSetu Portal &rarr;
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -1642,7 +1646,7 @@
         </div>
 
         <div id="dlVaultUploadNotice" style="display: none; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 11.5px; color: #92400e;">
-          📌 Select a document below to attach it directly as verified legal evidence in Case Room <strong id="dlTargetRoomBadge">#NYAYA-701</strong>.
+          Select a document below to attach it directly as verified legal evidence in Case Room <strong id="dlTargetRoomBadge">#NYAYA-701</strong>.
         </div>
 
         <div class="dl-vault-grid" id="dlVaultListContainer">
@@ -1681,7 +1685,7 @@
        ================================================================== -->
   <div class="dl-sms-toast" id="digilockerSmsToast" style="display: none;">
     <div class="dl-sms-toast-header">
-      <strong>💬 SMS • AX-DGLOKR</strong>
+      <strong>SMS Notification • AX-DGLOKR</strong>
       <span>Just Now</span>
     </div>
     <div class="dl-sms-toast-body" id="smsToastBody">
@@ -1689,10 +1693,11 @@
     </div>
     <div class="dl-sms-toast-actions">
       <button type="button" class="btn-toast-dismiss" onclick="dismissSmsToast()">Dismiss</button>
-      <button type="button" class="btn-toast-autofill" onclick="autoFillOtpFromToast()">⚡ Auto-Fill OTP</button>
+      <button type="button" class="btn-toast-autofill" onclick="autoFillOtpFromToast()">Auto-Fill OTP</button>
     </div>
   </div>
 
-  <script src="app.js?v=4"></script>
+  <script src="drafter_logic.js"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>
